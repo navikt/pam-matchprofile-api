@@ -46,21 +46,21 @@ janzz:
   url: https://localhost/japi
   token: "token 123"
 
-#datasources:
-#  default:
-#    url: ${DB_JDBC_URL:`jdbc:tc:postgresql:12:///puls?TC_INITSCRIPT=postgres/postgres-init.sql`}
-#    driverClassName: ${DB_DRIVER:org.testcontainers.jdbc.ContainerDatabaseDriver}
-#    username: ${DB_USERNAME:puls}
-#    password: ${DB_PASSWORD:puls}
-#    maximum-pool-size: 4
-#    minimum-idle: 0
-#    pool-name: default
+datasources:
+  default:
+    url: ${DB_JDBC_URL:`jdbc:tc:postgresql:14:///puls?TC_INITSCRIPT=postgres/postgres-init.sql`}
+    driverClassName: ${DB_DRIVER:org.testcontainers.jdbc.ContainerDatabaseDriver}
+    username: ${DB_USERNAME:matchprofile}
+    password: ${DB_PASSWORD:matchprofile}
+    maximum-pool-size: 4
+    minimum-idle: 0
+    pool-name: default
 
-#flyway:
-#  datasources:
-#    default:
-#      locations: classpath:db/migration
-#      #clean-on-validation-error: true
+flyway:
+  datasources:
+    default:
+      locations: classpath:db
+      #clean-on-validation-error: true
 
 #kafka:
 #  producers:
