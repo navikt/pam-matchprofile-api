@@ -6,10 +6,6 @@ import org.slf4j.LoggerFactory
 @Singleton
 class MatchProfileService(private val repository: MatchProfileRepository) {
 
-    companion object {
-        private val LOG = LoggerFactory.getLogger(MatchProfileService::class.java)
-    }
-
     fun save(matchProfile: MatchProfileDTO) : MatchProfileDTO {
        val entity = matchProfile.id?.let { repository.findById(it).orElseThrow()
            .copy(status = matchProfile.status, title = matchProfile.title, description = matchProfile.description,
