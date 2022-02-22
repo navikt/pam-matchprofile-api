@@ -35,6 +35,7 @@ abstract class MatchProfileRepository(private val connection: Connection, privat
             }
         }
     }
+
     private fun PreparedStatement.prepareSQL(entity: MatchProfile) {
         var index=1
         setString(index, entity.sourceId)
@@ -49,5 +50,9 @@ abstract class MatchProfileRepository(private val connection: Connection, privat
         setTimestamp(++index, Timestamp.from(entity.created))
         setString(++index, entity.id)
     }
+
+    @Transactional
+    abstract fun findBySourceId(sourceId: String): MatchProfile?
+
 }
 

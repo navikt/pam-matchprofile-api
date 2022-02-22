@@ -11,6 +11,7 @@ create table match_profile(
     expires timestamptz not null default clock_timestamp(),
     created timestamptz not null default clock_timestamp(),
     updated timestamptz not null default clock_timestamp(),
-    primary key (id)
+    primary key (id),
+    unique (source_id)
 );
 
