@@ -22,6 +22,9 @@ class MatchProfileService(private val repository: MatchProfileRepository) {
         return repository.findBySourceId(sourceId)?.toDTO()
     }
 
+    fun findById(id:String): MatchProfileDTO? {
+        return repository.findById(id).orElse(null).toDTO()
+    }
 
     private fun MatchProfileDTO.toEntity(): MatchProfile {
         return MatchProfile(id = id, sourceId = sourceId, type = type, status = status, title = title, description = description,
