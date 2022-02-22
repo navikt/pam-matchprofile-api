@@ -1,7 +1,6 @@
 package no.nav.arbeidsplassen.matchprofile.profile
 
 import jakarta.inject.Singleton
-import org.slf4j.LoggerFactory
 
 @Singleton
 class MatchProfileService(private val repository: MatchProfileRepository) {
