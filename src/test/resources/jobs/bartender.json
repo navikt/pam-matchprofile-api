@@ -1,0 +1,162 @@
+{
+  "id": 1885153,
+  "uuid": "b09b2c37-2a62-4440-bbcd-9b613612c088",
+  "created": "2022-01-27T11:13:02.129437",
+  "createdBy": "pam-ad",
+  "updated": "2022-01-31T07:52:51.199563",
+  "updatedBy": "nss-admin",
+  "mediaList": [],
+  "contactList": [
+    {
+      "id": 1898671,
+      "name": "name",
+      "email": "email@esmeralda.no",
+      "phone": "123456789",
+      "role": null,
+      "title": "Daglig Leder"
+    }
+  ],
+  "location": {
+    "address": "Nedre Langgate 26c",
+    "postalCode": "3126",
+    "county": "VESTFOLD OG TELEMARK",
+    "municipal": "TØNSBERG",
+    "municipalCode": "3803",
+    "city": "TØNSBERG",
+    "country": "NORGE",
+    "latitude": "59.2660889906025",
+    "longitude": "10.40587722134112"
+  },
+  "locationList": [
+    {
+      "address": "Nedre Langgate 26c",
+      "postalCode": "3126",
+      "county": "VESTFOLD OG TELEMARK",
+      "municipal": "TØNSBERG",
+      "municipalCode": "3803",
+      "city": "TØNSBERG",
+      "country": "NORGE",
+      "latitude": "59.2660889906025",
+      "longitude": "10.40587722134112"
+    }
+  ],
+  "properties": {
+    "extent": "Deltid",
+    "employerhomepage": "https://www.esmeralda.no",
+    "workhours": "[\"Kveld\",\"Natt\",\"Dagtid\"]",
+    "workday": "[\"Lørdag\",\"Ukedager\",\"Søndag\"]",
+    "applicationdue": "2022-03-31",
+    "jobtitle": "Servitør",
+    "positioncount": "2",
+    "engagementtype": "Feriejobb",
+    "_approvedby": "AUTO",
+    "facebookpage": "https://Facebook.com/esmeralda.no/",
+    "employerdescription": "<p>Esmeralda ble startet i april 1991 og ligger på den populære brygga i Tønsberg.</p>\n",
+    "starttime": "Etter avtale",
+    "_score": "[{\"name\":\"category\",\"value\":-50},{\"name\":\"keywords\",\"value\":-10}]",
+    "jobarrangement": "Vakt",
+    "adtext": "<p>SOMMER 2022 - Esmeralda søker servitører, bartendere og runnere for</p>\n<p>sommersesongen 2022.</p>\n<p>Vi ansetter nå fortløpende medarbeidere for sommeren, vi øker bemanningen fra mai, juni og juli. Har du erfaring og vil planlegge fremmover, kontakt oss nå.</p>\n<p>Esmeralda er svært populær og vi har fulle hus gjennom hele sommeren. Vi søker medarbeidere med erfaring, men er du rett person kan vi gi deg den opplæringen du trenger. du må være fylt 20 år.</p>\n<p>Er du mellom 18 og 20, merker du søknaden med &#34;runner&#34;</p>\n<p>Arbeidstid er alle dager, vi tilrettelegger vakter så det passer deg, ukedager og helger, dagtid og kveldstid. Vi finner den stillingsprosenten du ønsker.</p>\n<p>Godt arbeidsmiljø. Hyggelige kolleager. Er dette noe for deg?</p>\n<p>Kom gjerne innom å se vår trivelige restaurant</p>\n<p><strong>Personlige egenskaper</strong></p>\n<ul><li>Serviceinnstilt</li><li>Blid, omgjengelig og utadvent</li><li>liker å omgås mennesker</li></ul>\n",
+    "classification_styrk08_code": "5131",
+    "applicationemail": "jobb@esmeralda.no",
+    "jobpercentage": "50",
+    "applicationurl": "https://jobb@esmeralda.no",
+    "employer": "Esmeralda",
+    "ontologyJobtitle": "{\"konseptId\":21846,\"label\":\"Servitør\",\"styrk08\":\"5131\"}",
+    "classification_esco_code": "http://data.europa.eu/esco/occupation/d5db9d5c-2ebf-4a54-a79a-1b7e7ff70471",
+    "_scoretotal": "-60",
+    "sector": "Privat"
+  },
+  "title": "Sommer 2022 - Servitører og bartendere for sommersesongen",
+  "status": "ACTIVE",
+  "privacy": "SHOW_ALL",
+  "source": "Stillingsregistrering",
+  "medium": "Stillingsregistrering",
+  "reference": "b09b2c37-2a62-4440-bbcd-9b613612c088",
+  "published": "2022-01-31T00:00:00",
+  "expires": "2022-03-31T00:00:00",
+  "employer": {
+    "id": 153183,
+    "uuid": "cc8ce625-1bd2-4e80-b6fd-97704d84b69a",
+    "created": "2018-10-11T09:11:00.641",
+    "createdBy": "pam-ad",
+    "updated": "2022-01-06T23:53:01.00593",
+    "updatedBy": "pam-ad",
+    "mediaList": [],
+    "contactList": [],
+    "location": {
+      "address": "Nedre Langgate 26C",
+      "postalCode": "3126",
+      "county": "VESTFOLD OG TELEMARK",
+      "municipal": "TØNSBERG",
+      "municipalCode": "3803",
+      "city": "TØNSBERG",
+      "country": "NORGE",
+      "latitude": "59.2660889906025",
+      "longitude": "10.40587722134112"
+    },
+    "locationList": [
+      {
+        "address": "Nedre Langgate 26C",
+        "postalCode": "3126",
+        "county": "VESTFOLD OG TELEMARK",
+        "municipal": "TØNSBERG",
+        "municipalCode": "3803",
+        "city": "TØNSBERG",
+        "country": "NORGE",
+        "latitude": "59.2660889906025",
+        "longitude": "10.40587722134112"
+      }
+    ],
+    "properties": {
+      "nace2": "[{\"code\":\"56.101\",\"name\":\"Drift av restauranter og kafeer\"}]"
+    },
+    "name": "ESMERALDA AS",
+    "orgnr": "974201828",
+    "status": "ACTIVE",
+    "parentOrgnr": "988463051",
+    "publicName": "ESMERALDA AS",
+    "deactivated": null,
+    "orgform": "BEDR",
+    "employees": 48
+  },
+  "categoryList": [
+    {
+      "id": 8509,
+      "code": "5132",
+      "categoryType": "STYRK08",
+      "name": "Bartendere",
+      "description": null,
+      "parentId": 8222
+    },
+    {
+      "id": 12608,
+      "code": "http://data.europa.eu/esco/occupation/d5db9d5c-2ebf-4a54-a79a-1b7e7ff70471",
+      "categoryType": "ESCO",
+      "name": "servitør",
+      "description": "Waiters/waitresses supply guests with food and drinks as requested. Waiters/waitresses usually work in restaurants, bars and hotels. This involves the preparation of tables, serving food or beverages and taking payments.",
+      "parentId": null
+    },
+    {
+      "id": 8508,
+      "code": "5131",
+      "categoryType": "STYRK08",
+      "name": "Servitører",
+      "description": null,
+      "parentId": 8222
+    }
+  ],
+  "administration": {
+    "id": 1075302,
+    "status": "DONE",
+    "comments": "Auto approved - 2022-01-27T11:13:01.918972870\n",
+    "reportee": "Forsang, Mette Holm",
+    "remarks": [],
+    "navIdent": "L118974",
+    "message": null
+  },
+  "publishedByAdmin": "2022-01-27T11:13:01.919",
+  "businessName": "Esmeralda",
+  "firstPublished": true,
+  "deactivatedByExpiry": false,
+  "activationOnPublishingDate": false
+}
