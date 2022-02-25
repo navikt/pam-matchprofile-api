@@ -8,6 +8,7 @@ import java.util.*
 @Introspected
 data class MatchProfileDTO (
     var id: String? = null,
+    val owner: String,
     val sourceId: String = UUID.randomUUID().toString(),
     val type: MatchProfileType = MatchProfileType.JOB,
     val status: MatchProfileStatus = MatchProfileStatus.ACTIVE,
@@ -25,5 +26,5 @@ data class MatchProfileDTO (
 data class ProfileDTO(val keywords: Set<ConceptDTO> = hashSetOf())
 
 @Introspected
-data class ConceptDTO(val label: String, val cid: Long? = null,  val type: String, val known: Boolean = true,
-                   val expandedConcept: Boolean = false, val createdByUser: Boolean=false, val lang: String = "no")
+data class ConceptDTO(val label: String, val cid: Long? = null, val branch: String?, val expandedConcept: String? = null,
+                      val lang: String = "no")

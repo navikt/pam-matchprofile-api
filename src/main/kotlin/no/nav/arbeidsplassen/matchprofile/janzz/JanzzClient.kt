@@ -15,24 +15,23 @@ import io.micronaut.http.client.annotation.Client
 interface JanzzClient {
 
     @Post("/parser/parse_job/")
-    @Header(name = HttpHeaders.ACCEPT, value = "application/json")
-    fun parseJob(@Body QueryBody: QueryBody): ParsedDTO
+    fun parseJob(@Body QueryBody: QueryBody, @QueryValue want_cids: Boolean = true): ParsedDTO
 
     // NOT as good, we use parseJob
     @Post("/parser/parse_cv/")
-    @Header(name = HttpHeaders.ACCEPT, value = "application/json")
     fun parseCV(@Body QueryBody: QueryBody): ParsedDTO
 
     @Post("/parser/similarity/")
-    @Header(name = HttpHeaders.ACCEPT, value = "application/json")
     fun findSimilarity(@Body similarity: SimilarityBody): JsonNode
 
 
     @Get("/occupation_suggest")
-    @Header(name = HttpHeaders.ACCEPT, value = "application/json")
     fun occupationBranchRelation(@QueryValue occupation: String, @QueryValue relation:String, @QueryValue lang: String = "no"): ConceptResultsDTO
 
     @Get("/expand_concept")
-    fun conceptExpand(@QueryValue q: String, @QueryValue branch: String, @QueryValue output_lang: String="no"): ConceptResultsDTO
+    fun expandConcept(@QueryValue q: String, @QueryValue branch: String, @QueryValue output_lang: String="no", @QueryValue with_cids: Boolean = true, @QueryValue exclude_tags: Boolean = true): ConceptResultsDTO
+
+    @Get("/expand_concept_id")
+    fun expandConceptByCid(@QueryValue id: Long, @QueryValue output_lang: String="no", @QueryValue with_cids: Boolean = true, @QueryValue exclude_tags: Boolean = true): ConceptResultsDTO
 
 }

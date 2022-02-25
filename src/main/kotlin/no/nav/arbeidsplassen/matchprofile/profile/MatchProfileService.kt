@@ -21,8 +21,12 @@ class MatchProfileService(private val repository: MatchProfileRepository) {
         return repository.findById(id).orElse(null).toDTO()
     }
 
+    fun findByOwner(owner: String): List<MatchProfileDTO> {
+        return repository.findByOwner(owner).map { it.toDTO() }
+    }
+
     private fun MatchProfileDTO.toEntity(): MatchProfile {
-        return MatchProfile(id = id, sourceId = sourceId, type = type, status = status, title = title, description = description,
+        return MatchProfile(id = id, owner = owner, sourceId = sourceId, type = type, status = status, title = title, description = description,
             profile = profile.toEntity(), createdBy = createdBy, updatedBy = updatedBy, expires = expires, created = created,
         updated = updated)
     }
@@ -32,8 +36,7 @@ class MatchProfileService(private val repository: MatchProfileRepository) {
     }
 
     private fun ConceptDTO.toEntity(): Concept {
-        return Concept(label = label, cid = cid, type = type, known = known, expandedConcept = expandedConcept,
-            createdByUser = createdByUser, lang = lang)
+        return Concept(label = label, cid = cid, branch = branch, expandedConcept = expandedConcept, lang = lang)
     }
 
     private fun Profile.toDTO(): ProfileDTO {
@@ -41,12 +44,11 @@ class MatchProfileService(private val repository: MatchProfileRepository) {
     }
 
     private fun Concept.toDTO() : ConceptDTO {
-        return ConceptDTO(label = label, cid = cid, type = type, known = known, expandedConcept = expandedConcept,
-            createdByUser = createdByUser, lang = lang)
+        return ConceptDTO(label = label, cid = cid, branch = branch, expandedConcept = expandedConcept, lang = lang)
     }
 
     private fun MatchProfile.toDTO(): MatchProfileDTO {
-       return MatchProfileDTO(id = id, sourceId = sourceId, type = type, status = status, title = title, description = description,
+       return MatchProfileDTO(id = id, owner = owner,  sourceId = sourceId, type = type, status = status, title = title, description = description,
            profile = profile.toDTO(), createdBy = createdBy, updatedBy = updatedBy, expires = expires, created = created,
            updated = updated)
     }

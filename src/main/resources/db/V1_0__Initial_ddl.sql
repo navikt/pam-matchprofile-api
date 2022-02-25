@@ -1,5 +1,6 @@
 create table match_profile(
     id varchar(36) not null,
+    owner varchar(255) not null,
     source_id varchar(36) not null,
     type varchar(255) not null,
     status varchar(255) not null,
@@ -15,3 +16,4 @@ create table match_profile(
     unique (source_id)
 );
 
+create index match_profile_owner on match_profile(owner);

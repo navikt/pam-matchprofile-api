@@ -9,8 +9,8 @@ class MatchProfileServiceTest(private val matchProfileService: MatchProfileServi
 
     @Test
     fun crudMatchProfile() {
-        val matchprofile = MatchProfileDTO(title = "This is a title", description = "this is a description",
-            profile = ProfileDTO(keywords = hashSetOf(ConceptDTO(label = "taktekker", type = "occupation")))
+        val matchprofile = MatchProfileDTO(owner = "owner", title = "This is a title", description = "this is a description",
+            profile = ProfileDTO(keywords = hashSetOf(ConceptDTO(label = "taktekker", branch = "occupation")))
         )
         val created = matchProfileService.save(matchprofile)
         val find = matchProfileService.findById(created.id!!)
