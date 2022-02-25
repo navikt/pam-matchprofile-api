@@ -1,15 +1,19 @@
 package no.nav.arbeidsplassen.matchprofile.profile
 
 import jakarta.inject.Singleton
+import no.nav.arbeidsplassen.matchprofile.outbox.Outbox
+import no.nav.arbeidsplassen.puls.outbox.OutboxRepository
 
 @Singleton
-class MatchProfileService(private val repository: MatchProfileRepository) {
+class MatchProfileService(private val repository: MatchProfileRepository, private val outboxRepository: OutboxRepository) {
 
     fun save(matchProfile: MatchProfileDTO) : MatchProfileDTO {
        val entity = matchProfile.id?.let { repository.findById(it).orElseThrow()
            .copy(status = matchProfile.status, title = matchProfile.title, description = matchProfile.description,
                profile = matchProfile.profile.toEntity(), expires = matchProfile.expires) } ?: matchProfile.toEntity()
-        return repository.save(entity).toDTO()
+        val saved = repository.save(entity).toDTO()
+        outboxRepository.save(Outbox(keyId = saved.id!!, type = saved.type.toString(), payload = saved))
+        return saved
     }
 
 
