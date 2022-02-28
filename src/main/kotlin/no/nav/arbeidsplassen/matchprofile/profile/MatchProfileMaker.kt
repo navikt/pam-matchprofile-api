@@ -20,6 +20,7 @@ class MatchProfileMaker(private val conceptFinder: ConceptFinder) {
             owner = event.organizationNumber, sourceId = event.id, title = event.title, description = event.organizationName)
     }
 
+    // TODO owner is unclear for CV. it should be subjectId in this case. (Check what we get from CV topic, using cv.uuid temporally)
     fun cvMatchProfile(cv: CvDTO): MatchProfileDTO {
         val concepts = conceptFinder.findConceptsForCv(cv)
         return MatchProfileDTO(profile = ProfileDTO(concepts = concepts), type = MatchProfileType.USER, owner = cv.uuid,
