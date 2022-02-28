@@ -2,6 +2,7 @@ package no.nav.arbeidsplassen.matchprofile.profile
 
 import io.micronaut.http.annotation.*
 import org.slf4j.LoggerFactory
+import java.util.*
 
 //TODO authentication later
 // Authorization by verifying true owner, before retrieving from the database.
@@ -32,7 +33,10 @@ class MatchProfileController(private val matchProfileService: MatchProfileServic
     @Post("/")
     fun create(@Body matchProfile: MatchProfileDTO) : MatchProfileDTO {
         LOG.info("saving matchprofile with sourceId: ${matchProfile.sourceId}")
-        return matchProfileService.save(matchProfile)
+        // TODO must verify owner here, and set the loggedIn owner.
+        return if (matchProfile.owner == null ) {
+            matchProfileService.save(matchProfile.copy(owner = "anonymous"))
+        } else matchProfileService.save(matchProfile)
     }
 
 

@@ -17,6 +17,6 @@ class ConceptFinderIT(private val conceptFinder: ConceptFinder, private val obje
     @Test
     fun findConceptsForText() {
         val text = "Servitører\n Bartendere\n Servitør\n Serviceinnstilt\n Blid\n Omgjengelig\n Kommunikasjonsevner\n Øltapper"
-        println(objectMapper.writeValueAsString(conceptFinder.findKnownConceptsForText(text, false)))
+        println(objectMapper.writeValueAsString(conceptFinder.findConceptsForText(text, false)))
     }
 }

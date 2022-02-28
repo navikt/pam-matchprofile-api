@@ -27,8 +27,4 @@ class MatchProfileMaker(private val conceptFinder: ConceptFinder) {
             sourceId = cv.uuid, title = "Autogenerert", description = "Autogenerert")
     }
 
-    fun userMatchProfile(matchProfile: MatchProfileDTO): MatchProfileDTO {
-        val concepts = conceptFinder.findBranchForKnownConcepts(matchProfile.profile.concepts)
-        return matchProfile.copy(profile = ProfileDTO(concepts = concepts))
-    }
 }

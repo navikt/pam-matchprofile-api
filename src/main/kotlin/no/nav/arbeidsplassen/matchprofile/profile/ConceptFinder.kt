@@ -46,16 +46,8 @@ class ConceptFinder(private val janzzClient: JanzzClient) {
         return combineConcepts.associateBy { it.label }.values.toHashSet()
     }
 
-    fun findKnownConceptsForText(text: String, related: Boolean = true) : Set<ConceptDTO> {
+    fun findConceptsForText(text: String, related: Boolean = true) : Set<ConceptDTO> {
         val concepts = getParsedConcepts(parseText(text))
-        val combineConcepts = if (related ) concepts.plus(getRelatedConcepts(concepts)) else concepts
-        return combineConcepts.associateBy { it.label }.values.toHashSet()
-    }
-
-    fun findBranchForKnownConcepts(knownConcepts: Set<ConceptDTO>, related: Boolean = true) : Set<ConceptDTO> {
-        val concepts = getParsedConcepts(
-            parseText(knownConcepts.filter { it.cid != null }.map { it.label }.joinToString("\n"))
-        )
         val combineConcepts = if (related ) concepts.plus(getRelatedConcepts(concepts)) else concepts
         return combineConcepts.associateBy { it.label }.values.toHashSet()
     }
