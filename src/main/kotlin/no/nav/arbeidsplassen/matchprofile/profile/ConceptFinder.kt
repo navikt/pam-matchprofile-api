@@ -10,7 +10,7 @@ import no.nav.arbeidsplassen.matchprofile.janzz.Branch.function
 import no.nav.arbeidsplassen.matchprofile.janzz.Branch.industry
 import no.nav.arbeidsplassen.matchprofile.janzz.Branch.occupation
 import no.nav.arbeidsplassen.matchprofile.job.AdDTO
-import no.nav.arbeidsplassen.matchprofile.profile.Concept
+import no.nav.arbeidsplassen.matchprofile.profile.ConceptDTO
 import no.nav.arbeidsplassen.matchprofile.janzz.Branch.skill
 import no.nav.arbeidsplassen.matchprofile.janzz.Branch.softskill
 import no.nav.arbeidsplassen.matchprofile.janzz.Branch.specialization
@@ -26,22 +26,39 @@ class ConceptFinder(private val janzzClient: JanzzClient) {
         private val LOG = LoggerFactory.getLogger(ConceptFinder::class.java)
     }
 
-    fun findConceptsForJobAd(ad:AdDTO, related: Boolean = true) : List<Concept> {
+    fun findConceptsForJobAd(ad:AdDTO, related: Boolean = true) : Set<ConceptDTO> {
         val concepts = getParsedConcepts(parseJobAd(ad))
-        LOG.info("parsed: ${ad.uuid} found ${concepts.size} concepts")
-        return if (related ) concepts.plus(getRelatedConcepts(concepts)) else concepts
+        LOG.info("parsed job ad: ${ad.uuid} found ${concepts.size} concepts")
+        val combineConcepts = if (related ) concepts.plus(getRelatedConcepts(concepts)) else concepts
+        return combineConcepts.associateBy { it.label }.values.toHashSet()
     }
 
-    fun findKnownConceptsForText(text: String, related: Boolean = true) : List<Concept> {
+    fun findConceptsForEvent(event: EventDTO, related: Boolean = true) : Set<ConceptDTO> {
+        val concepts = getParsedConcepts(parseEvent(event))
+        LOG.info("parsed event: ${event.id} found ${concepts.size} concepts")
+        val combineConcepts = if (related ) concepts.plus(getRelatedConcepts(concepts)) else concepts
+        return combineConcepts.associateBy { it.label }.values.toHashSet()
+    }
+
+    fun findConceptsForCv(cv: CvDTO, related: Boolean = true) : Set<ConceptDTO> {
+        val concepts = getParsedConcepts(parseCV(cv))
+        LOG.info("parsed event: ${cv.uuid} found ${concepts.size} concepts")
+        val combineConcepts = if (related ) concepts.plus(getRelatedConcepts(concepts)) else concepts
+        return combineConcepts.associateBy { it.label }.values.toHashSet()
+    }
+
+    fun findKnownConceptsForText(text: String, related: Boolean = true) : Set<ConceptDTO> {
         val concepts = getParsedConcepts(parseText(text))
-        return if (related ) concepts.plus(getRelatedConcepts(concepts)) else concepts
+        val combineConcepts = if (related ) concepts.plus(getRelatedConcepts(concepts)) else concepts
+        return combineConcepts.associateBy { it.label }.values.toHashSet()
     }
 
-    fun findKnownConcepts(knownConcepts: List<Concept>, related: Boolean = true) : List<Concept> {
+    fun findBranchForKnownConcepts(knownConcepts: Set<ConceptDTO>, related: Boolean = true) : Set<ConceptDTO> {
         val concepts = getParsedConcepts(
             parseText(knownConcepts.filter { it.cid != null }.map { it.label }.joinToString("\n"))
         )
-        return if (related) concepts.plus(getRelatedConcepts(concepts)) else concepts
+        val combineConcepts = if (related ) concepts.plus(getRelatedConcepts(concepts)) else concepts
+        return combineConcepts.associateBy { it.label }.values.toHashSet()
     }
 
     private fun parseText(text: String): ParsedDTO {
@@ -80,7 +97,7 @@ class ConceptFinder(private val janzzClient: JanzzClient) {
         return events.map { parseEvent(it) }
     }
 
-    private fun getParsedConcepts(doc: ParsedDTO): List<Concept> {
+    private fun getParsedConcepts(doc: ParsedDTO): List<ConceptDTO> {
         val concepts = termsToConcepts(doc.json.Occupation, occupation)
             .plus(termsToConcepts(doc.json.Skills, skill))
             .plus(termsToConcepts(doc.json.Education, education))
@@ -92,7 +109,7 @@ class ConceptFinder(private val janzzClient: JanzzClient) {
         return concepts
     }
 
-    private fun getRelatedConcepts(concepts: List<Concept>): List<Concept> {
+    private fun getRelatedConcepts(concepts: List<ConceptDTO>): List<ConceptDTO> {
         val onlyOccupations = concepts
             .filter { it.branch == occupation }
             .filter { it.cid != null }
@@ -102,25 +119,25 @@ class ConceptFinder(private val janzzClient: JanzzClient) {
             .flatMap {(label, results) ->
                 results
                     .take(cSkills)
-                    .map { Concept(label=it.label, cid = it.cid, branch = skill, expandedConcept = label)}
+                    .map { ConceptDTO(label=it.label, cid = it.cid, branch = skill, expandedConcept = label)}
              }
 
         val expansions = onlyOccupations
             .map { Pair(it.label, janzzClient.expandConceptByCid(it.cid!!).results ) }
             .flatMap {(label, results) -> results
                                             .take(cExpansions)
-                                            .map{ Concept(label=it.label, cid=it.cid, branch=occupation, expandedConcept = label)}}
+                                            .map{ ConceptDTO(label=it.label, cid=it.cid, branch=occupation, expandedConcept = label)}}
 
         return moreSkills.plus(expansions)
     }
 
-    private fun termsToConcepts(terms:List<List<String>>, type: String): List<Concept> {
+    private fun termsToConcepts(terms:List<List<String>>, type: String): List<ConceptDTO> {
         return terms.map { toConcept(it,type) }
     }
 
-    private fun toConcept(terms: List<String?>, type: String): Concept {
+    private fun toConcept(terms: List<String?>, type: String): ConceptDTO {
         println("$type:$terms")
-        return Concept(
+        return ConceptDTO(
             label = terms[0]!!,
             cid = terms[1]?.toLong(),
             branch = type
