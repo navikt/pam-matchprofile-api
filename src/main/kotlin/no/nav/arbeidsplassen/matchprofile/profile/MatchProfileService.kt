@@ -36,18 +36,18 @@ class MatchProfileService(private val repository: MatchProfileRepository, privat
     }
 
     private fun ProfileDTO.toEntity(): Profile {
-        return Profile(keywords = keywords.map { it.toEntity() }.toSet())
+        return Profile(concepts = concepts.map { it.toEntity() }.toSet())
     }
 
-    private fun ConceptDTO.toEntity(): Concept {
-        return Concept(label = label, cid = cid, branch = branch, expandedConcept = expandedConcept, lang = lang)
+    private fun ConceptDTO.toEntity(): ConceptDTO {
+        return ConceptDTO(label = label, cid = cid, branch = branch, expandedConcept = expandedConcept, lang = lang)
     }
 
     private fun Profile.toDTO(): ProfileDTO {
-        return ProfileDTO(keywords = keywords.map { it.toDTO() }.toSet() )
+        return ProfileDTO(concepts = concepts.map { it.toDTO() }.toSet() )
     }
 
-    private fun Concept.toDTO() : ConceptDTO {
+    private fun ConceptDTO.toDTO() : ConceptDTO {
         return ConceptDTO(label = label, cid = cid, branch = branch, expandedConcept = expandedConcept, lang = lang)
     }
 

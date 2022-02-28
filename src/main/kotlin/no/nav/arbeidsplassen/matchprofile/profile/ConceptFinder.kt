@@ -1,4 +1,4 @@
-package no.nav.arbeidsplassen.matchprofile.concept
+package no.nav.arbeidsplassen.matchprofile.profile
 
 import jakarta.inject.Singleton
 import no.nav.arbeidsplassen.matchprofile.cv.CvDTO
@@ -10,7 +10,6 @@ import no.nav.arbeidsplassen.matchprofile.janzz.Branch.function
 import no.nav.arbeidsplassen.matchprofile.janzz.Branch.industry
 import no.nav.arbeidsplassen.matchprofile.janzz.Branch.occupation
 import no.nav.arbeidsplassen.matchprofile.job.AdDTO
-import no.nav.arbeidsplassen.matchprofile.profile.ConceptDTO
 import no.nav.arbeidsplassen.matchprofile.janzz.Branch.skill
 import no.nav.arbeidsplassen.matchprofile.janzz.Branch.softskill
 import no.nav.arbeidsplassen.matchprofile.janzz.Branch.specialization

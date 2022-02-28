@@ -19,7 +19,7 @@ import javax.transaction.Transactional
 @JdbcRepository(dialect = Dialect.POSTGRES)
 abstract class OutboxRepository(private val connection: Connection, private val objectMapper: ObjectMapper): CrudRepository<Outbox, String> {
 
-    val insertSQL = """insert into "outbox" ("key_id", "type", "status", "payload", "updated" ) values (?,?,?,?::jsonb,clock_timestamp())"""
+    val insertSQL = """insert into "outbox" ("key_id", "type", "status", "payload", "updated", "id" ) values (?,?,?,?::jsonb,clock_timestamp(),?)"""
     val updateSQL = """update "outbox" set "key_id"=?, "type"=?, "status"=?, "payload"=?::jsonb, "updated"=clock_timestamp() where "id"=?"""
 
     @Transactional
@@ -47,13 +47,7 @@ abstract class OutboxRepository(private val connection: Connection, private val 
         setString(++index, entity.type)
         setString(++index, entity.status.toString())
         setString(++index, objectMapper.writeValueAsString(entity.payload))
-        if (entity.isNew()) {
-            DataSettings.QUERY_LOG.debug("Executing SQL INSERT: $insertSQL")
-        }
-        else {
-            setString(++index, entity.id!!)
-            DataSettings.QUERY_LOG.debug("Executing SQL UPDATE: $updateSQL")
-        }
+        setString(++index, entity.id)
     }
 
 

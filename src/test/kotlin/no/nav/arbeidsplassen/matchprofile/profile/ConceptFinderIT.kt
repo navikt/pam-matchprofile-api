@@ -1,4 +1,4 @@
-package no.nav.arbeidsplassen.matchprofile.concept
+package no.nav.arbeidsplassen.matchprofile.profile
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest

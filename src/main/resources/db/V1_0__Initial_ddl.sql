@@ -5,7 +5,7 @@ create table match_profile
     source_id   varchar(36)  not null,
     type        varchar(255) not null,
     status      varchar(255) not null,
-    title       varchar(512),
+    title       varchar(1024),
     description varchar(1024),
     profile     jsonb        not null,
     created_by  varchar(255) not null,
