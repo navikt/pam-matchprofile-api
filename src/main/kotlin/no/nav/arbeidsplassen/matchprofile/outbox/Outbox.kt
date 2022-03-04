@@ -5,6 +5,7 @@ import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.TypeDef
 import io.micronaut.data.model.DataType
+import no.nav.arbeidsplassen.matchprofile.profile.MatchProfileDTO
 import java.time.Instant
 
 
@@ -17,7 +18,7 @@ data class Outbox(
     @field:TypeDef(type = DataType.STRING)
     val status: OutboxStatus = OutboxStatus.PENDING,
     @field:TypeDef(type = DataType.JSON)
-    val payload: Any,
+    val payload: MatchProfileDTO,
     val updated: Instant = Instant.now())
 
 fun Outbox.isNew(): Boolean = id == null
