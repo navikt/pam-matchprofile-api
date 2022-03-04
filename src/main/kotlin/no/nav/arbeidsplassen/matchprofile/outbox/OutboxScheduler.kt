@@ -28,7 +28,7 @@ class OutboxScheduler(private val repository: OutboxRepository,
                 kafkaSender.sendEventFromOutbox(outbox.keyId, outbox.payload).subscribe(
                     {
                         repository.save(outbox.copy(status = OutboxStatus.DONE))
-                        LOG.debug("sent successfully ${outbox.keyId}")
+                        LOG.info("sent successfully ${outbox.keyId}")
                         counter++
                     },
                     {

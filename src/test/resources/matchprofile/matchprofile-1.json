@@ -1,0 +1,20 @@
+{
+  "owner" : "owner",
+  "sourceId" : "bf07554b-ee45-4ac2-bbb6-3e84f45a4c63",
+  "type" : "JOB",
+  "status" : "ACTIVE",
+  "title" : "Taktekker",
+  "description" : "Taktekker AS",
+  "profile" : {
+    "concepts" : [ {
+      "label" : "taktekker",
+      "branch" : "occupation",
+      "lang" : "no"
+    } ]
+  },
+  "createdBy" : "matchprofile-api",
+  "updatedBy" : "matchprofile-api",
+  "expires" : "2022-04-03T13:00:29.442672Z",
+  "created" : "2022-03-04T13:00:29.442694Z",
+  "updated" : "2022-03-04T13:00:28.592897Z"
+}

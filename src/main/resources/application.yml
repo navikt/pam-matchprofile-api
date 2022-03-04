@@ -56,15 +56,18 @@ datasources:
     minimum-idle: 0
     pool-name: default
 
+outbox:
+  kafka:
+    topic: teampam.matchprofile-intern-1
+
 flyway:
   datasources:
     default:
       locations: classpath:db
-      #clean-on-validation-error: true
 
-#kafka:
-#  producers:
-#    default:
-#      linger.ms: 5000
-#      batch.size: 65536
+kafka:
+  producers:
+    default:
+      linger.ms: 5000
+      batch.size: 65536
 
