@@ -31,9 +31,11 @@ class MatchProfileServiceTest(private val matchProfileService: MatchProfileServi
         val savedWithUser = matchProfileService.saveWithUser(matchprofile, pId)
         val updated = matchProfileService.saveWithUser(savedWithUser.copy(title = "new title"), pId)
         println(objectMapper.writeValueAsString(updated))
+        val findByPid = matchProfileService.findByPId(pId)
+        Assertions.assertNotNull(findByPid)
         Assertions.assertThrows(IllegalArgumentException::class.java) {
             matchProfileService.saveWithUser(
-                savedWithUser,
+                findByPid!!,
                 "987654321"
             )
         }

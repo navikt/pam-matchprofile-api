@@ -35,8 +35,13 @@ class MatchProfileService(private val repository: MatchProfileRepository, privat
         return repository.findById(id).orElse(null).toDTO()
     }
 
+
     fun findByOrgnr(orgnr: String): List<MatchProfileDTO> {
         return repository.findByOrgnr(orgnr).map { it.toDTO() }
+    }
+
+    fun findByPId(pId: String): MatchProfileDTO? {
+        return repository.findByPId(pId)?.toDTO()
     }
 
     private fun MatchProfileDTO.toEntity(): MatchProfile {

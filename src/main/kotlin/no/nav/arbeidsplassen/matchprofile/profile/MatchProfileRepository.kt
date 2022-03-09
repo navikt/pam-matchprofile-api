@@ -59,5 +59,7 @@ abstract class MatchProfileRepository(private val connection: Connection, privat
     @Transactional
     abstract fun findByOrgnr(orgnr: String): List<MatchProfile>
 
+    @Transactional
+    abstract fun findByPId(pId: String): MatchProfile?
 }
 
