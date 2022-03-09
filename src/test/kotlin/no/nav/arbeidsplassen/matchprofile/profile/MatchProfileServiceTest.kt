@@ -21,4 +21,22 @@ class MatchProfileServiceTest(private val matchProfileService: MatchProfileServi
         Assertions.assertEquals(inactive.title, "Changed title")
         println(objectMapper.writeValueAsString(inactive))
     }
+
+    @Test
+    fun saveMatchProfileWithUser() {
+        val matchprofile = MatchProfileDTO(title = "This is a title", description = "this is a description",
+            profile = ProfileDTO(concepts = hashSetOf(ConceptDTO(label = "utvikler", branch = "occupation")))
+        )
+        val pId = "123456789"
+        val savedWithUser = matchProfileService.saveWithUser(matchprofile, pId)
+        val updated = matchProfileService.saveWithUser(savedWithUser.copy(title = "new title"), pId)
+        println(objectMapper.writeValueAsString(updated))
+        Assertions.assertThrows(IllegalArgumentException::class.java) {
+            matchProfileService.saveWithUser(
+                savedWithUser,
+                "987654321"
+            )
+        }
+    }
+
 }

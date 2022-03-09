@@ -14,8 +14,8 @@ import javax.transaction.Transactional
 abstract class MatchProfileRepository(private val connection: Connection, private val objectMapper: ObjectMapper) : CrudRepository<MatchProfile, String> {
 
     private val tableName = "match_profile"
-    val insertSQL = """insert into $tableName ("orgnr", "source_id", "type", "status", "title", "description", "profile", "created_by", "updated_by", "expires", "created", "updated", "id") values (?,?,?,?,?,?,?::jsonb,?,?,?,?, clock_timestamp(),?)"""
-    val updateSQL = """update $tableName set "orgnr"=?, "source_id"=?, "type"=?, "status"=?, "title"=?, "description"=?, "profile"=?::jsonb, "created_by"=?, "updated_by"=?, "expires"=?, "created"=?, "updated"=clock_timestamp() where "id"=?"""
+    val insertSQL = """insert into $tableName ("p_id", "orgnr", "source_id", "type", "status", "title", "description", "profile", "created_by", "updated_by", "expires", "created", "updated", "id") values (?,?,?,?,?,?,?,?::jsonb,?,?,?,?, clock_timestamp(),?)"""
+    val updateSQL = """update $tableName set "p_id"=?, "orgnr"=?, "source_id"=?, "type"=?, "status"=?, "title"=?, "description"=?, "profile"=?::jsonb, "created_by"=?, "updated_by"=?, "expires"=?, "created"=?, "updated"=clock_timestamp() where "id"=?"""
 
     @Transactional
     override fun <S : MatchProfile> save(entity: S): S {
@@ -38,7 +38,8 @@ abstract class MatchProfileRepository(private val connection: Connection, privat
 
     private fun PreparedStatement.prepareSQL(entity: MatchProfile) {
         var index=1
-        setString(index,entity.orgnr)
+        setString(index,entity.pId)
+        setString(++index,entity.orgnr)
         setString(++index, entity.sourceId)
         setString(++index, entity.type.name)
         setString(++index, entity.status.name)

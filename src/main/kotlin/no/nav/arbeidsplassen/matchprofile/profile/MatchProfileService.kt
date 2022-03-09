@@ -16,6 +16,17 @@ class MatchProfileService(private val repository: MatchProfileRepository, privat
         return saved
     }
 
+    fun saveWithUser(matchProfile: MatchProfileDTO, pId: String) : MatchProfileDTO {
+        val entity = matchProfile.id?.let { repository.findById(it).orElseThrow()
+            .takeIf {m -> m.pId == pId && m.sourceId == matchProfile.sourceId}?.copy(
+            status = matchProfile.status, title = matchProfile.title, description = matchProfile.description,
+            profile = matchProfile.profile.toEntity(), expires = matchProfile.expires) ?: throw IllegalArgumentException("Wrong user!")
+        } ?: matchProfile.toEntity(pId)
+        val saved = repository.save(entity).toDTO()
+        outboxRepository.save(Outbox(keyId = saved.id!!, type = saved.type.toString(), payload = saved))
+        return saved
+    }
+
     fun findBySourceId(sourceId: String): MatchProfileDTO? {
         return repository.findBySourceId(sourceId)?.toDTO()
     }
@@ -32,6 +43,12 @@ class MatchProfileService(private val repository: MatchProfileRepository, privat
         return MatchProfile(id = id, orgnr = orgnr, sourceId = sourceId, type = type, status = status, title = title, description = description,
             profile = profile.toEntity(), createdBy = createdBy, updatedBy = updatedBy, expires = expires, created = created,
         updated = updated)
+    }
+
+    private fun MatchProfileDTO.toEntity(pId: String): MatchProfile {
+        return MatchProfile(id = id, pId = pId,  orgnr = orgnr, sourceId = sourceId, type = type, status = status, title = title, description = description,
+            profile = profile.toEntity(), createdBy = createdBy, updatedBy = updatedBy, expires = expires, created = created,
+            updated = updated)
     }
 
     private fun ProfileDTO.toEntity(): Profile {
@@ -51,7 +68,7 @@ class MatchProfileService(private val repository: MatchProfileRepository, privat
     }
 
     private fun MatchProfile.toDTO(): MatchProfileDTO {
-       return MatchProfileDTO(id = id, orgnr = orgnr,   sourceId = sourceId, type = type, status = status, title = title, description = description,
+       return MatchProfileDTO(id = id, orgnr = orgnr, sourceId = sourceId, type = type, status = status, title = title, description = description,
            profile = profile.toDTO(), createdBy = createdBy, updatedBy = updatedBy, expires = expires, created = created,
            updated = updated)
     }
