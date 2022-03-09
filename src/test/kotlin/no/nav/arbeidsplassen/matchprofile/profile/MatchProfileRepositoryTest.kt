@@ -16,7 +16,7 @@ class MatchProfileRepositoryTest(private val repository: MatchProfileRepository,
 
     @Test
     fun duplicateConceptsShouldNotBeAllowed() {
-        val match = MatchProfile(owner ="owner", profile = Profile(concepts = hashSetOf(concept,concept2,concept4, concept5)))
+        val match = MatchProfile(orgnr ="orgnr", profile = Profile(concepts = hashSetOf(concept,concept2,concept4, concept5)))
         Assertions.assertEquals(match.profile.concepts.size, 3)
         println(objectMapper.writeValueAsString(match))
     }
@@ -24,7 +24,7 @@ class MatchProfileRepositoryTest(private val repository: MatchProfileRepository,
 
     @Test
     fun saveMatchProfile() {
-        val matchProfile = MatchProfile(owner ="owner", profile = Profile(concepts = hashSetOf(concept,concept2)))
+        val matchProfile = MatchProfile(orgnr ="orgnr", profile = Profile(concepts = hashSetOf(concept,concept2)))
         val saved = repository.save(matchProfile)
         val found = repository.findBySourceId(saved.sourceId)
         val foundUpdated = found?.copy(profile = Profile(hashSetOf(concept3)), status = MatchProfileStatus.INACTIVE)

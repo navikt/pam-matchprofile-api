@@ -12,7 +12,8 @@ import java.util.*
 data class MatchProfile(
     @field:Id
     var id: String? = null,
-    val owner: String?,
+    val pId: String? = null,
+    val orgnr: String? = null,
     val sourceId: String = UUID.randomUUID().toString(),
     @field:TypeDef(type = DataType.STRING)
     val type: MatchProfileType = MatchProfileType.JOB,
@@ -38,7 +39,8 @@ data class Concept(val label: String, val cid: Long? = null, val branch: String?
 enum class MatchProfileType {
     USER,
     JOB,
-    EVENT
+    EVENT,
+    CV
 }
 
 enum class MatchProfileStatus {

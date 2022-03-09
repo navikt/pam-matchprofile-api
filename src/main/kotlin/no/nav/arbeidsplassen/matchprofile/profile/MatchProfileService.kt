@@ -16,7 +16,6 @@ class MatchProfileService(private val repository: MatchProfileRepository, privat
         return saved
     }
 
-
     fun findBySourceId(sourceId: String): MatchProfileDTO? {
         return repository.findBySourceId(sourceId)?.toDTO()
     }
@@ -25,12 +24,12 @@ class MatchProfileService(private val repository: MatchProfileRepository, privat
         return repository.findById(id).orElse(null).toDTO()
     }
 
-    fun findByOwner(owner: String): List<MatchProfileDTO> {
-        return repository.findByOwner(owner).map { it.toDTO() }
+    fun findByOrgnr(orgnr: String): List<MatchProfileDTO> {
+        return repository.findByOrgnr(orgnr).map { it.toDTO() }
     }
 
     private fun MatchProfileDTO.toEntity(): MatchProfile {
-        return MatchProfile(id = id, owner = owner, sourceId = sourceId, type = type, status = status, title = title, description = description,
+        return MatchProfile(id = id, orgnr = orgnr, sourceId = sourceId, type = type, status = status, title = title, description = description,
             profile = profile.toEntity(), createdBy = createdBy, updatedBy = updatedBy, expires = expires, created = created,
         updated = updated)
     }
@@ -52,7 +51,7 @@ class MatchProfileService(private val repository: MatchProfileRepository, privat
     }
 
     private fun MatchProfile.toDTO(): MatchProfileDTO {
-       return MatchProfileDTO(id = id, owner = owner,  sourceId = sourceId, type = type, status = status, title = title, description = description,
+       return MatchProfileDTO(id = id, orgnr = orgnr,   sourceId = sourceId, type = type, status = status, title = title, description = description,
            profile = profile.toDTO(), createdBy = createdBy, updatedBy = updatedBy, expires = expires, created = created,
            updated = updated)
     }

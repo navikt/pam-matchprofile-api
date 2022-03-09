@@ -10,7 +10,7 @@ class MatchProfileServiceTest(private val matchProfileService: MatchProfileServi
 
     @Test
     fun crudMatchProfile() {
-        val matchprofile = MatchProfileDTO(owner = "owner", title = "This is a title", description = "this is a description",
+        val matchprofile = MatchProfileDTO(orgnr = "orgnr", title = "This is a title", description = "this is a description",
             profile = ProfileDTO(concepts = hashSetOf(ConceptDTO(label = "taktekker", branch = "occupation")))
         )
         val created = matchProfileService.save(matchprofile)

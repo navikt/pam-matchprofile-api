@@ -1,7 +1,8 @@
 create table match_profile
 (
     id          varchar(36)  not null,
-    owner       varchar(255) not null,
+    p_id        varchar(255),
+    orgnr       varchar(255),
     source_id   varchar(36)  not null,
     type        varchar(255) not null,
     status      varchar(255) not null,
@@ -17,7 +18,8 @@ create table match_profile
     unique (source_id)
 );
 
-create index match_profile_owner on match_profile (owner);
+create index match_profile_orgnr on match_profile (orgnr);
+create index match_profile_pid on match_profile(p_id);
 
 create table outbox
 (
