@@ -13,12 +13,19 @@ val openSearchRestClientVersion= project.properties["openSearchRestClientVersion
 val jakartaJsonVersion= project.properties["jakartaJsonVersion"]
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.6.10"
-    id("org.jetbrains.kotlin.kapt") version "1.6.10"
+    id("org.jetbrains.kotlin.jvm") version "1.5.31"
+    id("org.jetbrains.kotlin.kapt") version "1.5.31"
     id("com.github.johnrengelman.shadow") version "7.1.0"
     id("io.micronaut.application") version "3.2.1"
-    id("org.jetbrains.kotlin.plugin.allopen") version "1.6.10"
+    id("org.jetbrains.kotlin.plugin.allopen") version "1.5.31"
 }
+
+configurations.all {
+    resolutionStrategy {
+        failOnChangingVersions()
+    }
+}
+
 
 repositories {
     mavenLocal()
@@ -45,8 +52,31 @@ dependencies {
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
     implementation("javax.annotation:javax.annotation-api")
     implementation ("jakarta.persistence:jakarta.persistence-api:${jakartaPersistenceVersion}")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib") {
+        version {
+            strictly("$kotlinVersion")
+        }
+    }
+    implementation("org.jetbrains.kotlin:kotlin-reflect") {
+        version {
+            strictly("$kotlinVersion")
+        }
+    }
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8") {
+        version {
+            strictly("$kotlinVersion")
+        }
+    }
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-common") {
+        version {
+            strictly("$kotlinVersion")
+        }
+    }
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7") {
+        version {
+            strictly("$kotlinVersion")
+        }
+    }
     implementation("io.micronaut.kafka:micronaut-kafka:${micronautKafkaVersion}")
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("net.logstash.logback:logstash-logback-encoder:${logbackEncoderVersion}")
