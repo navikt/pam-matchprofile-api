@@ -13,7 +13,8 @@ class MatchProfileService(private val repository: MatchProfileRepository, privat
     @Transactional
     fun save(matchProfile: MatchProfileDTO) : MatchProfileDTO {
        val entity = matchProfile.id?.let { repository.findById(it).orElseThrow()
-           .mergeCopy(matchProfile)} ?: repository.findBySourceId(matchProfile.sourceId) // We only allow one matchprofile per sourceId for now
+           .mergeCopy(matchProfile)} ?: repository.findBySourceId(matchProfile.sourceId)
+           // We only allow one matchprofile per sourceId for now
            ?.mergeCopy(matchProfile) ?: matchProfile.toEntity()
         val saved = repository.save(entity).toDTO()
         outboxRepository.save(Outbox(keyId = saved.id!!, type = saved.type.toString(), payload = saved))
@@ -23,9 +24,7 @@ class MatchProfileService(private val repository: MatchProfileRepository, privat
     @Transactional
     fun saveWithUser(matchProfile: MatchProfileDTO, pId: String) : MatchProfileDTO {
         val entity = matchProfile.id?.let { repository.findById(it).orElseThrow()
-            .takeIf {m -> m.pId == pId && m.sourceId == matchProfile.sourceId}?.copy(
-            status = matchProfile.status, title = matchProfile.title, description = matchProfile.description,
-            profile = matchProfile.profile.toEntity(), expires = matchProfile.expires) ?: throw IllegalArgumentException("Wrong user!")
+            .takeIf {m -> m.pId == pId && m.sourceId == matchProfile.sourceId}?.mergeCopy(matchProfile) ?: throw IllegalArgumentException("Wrong user!")
         } ?: matchProfile.toEntity(pId)
         val saved = repository.save(entity).toDTO()
         outboxRepository.save(Outbox(keyId = saved.id!!, type = saved.type.toString(), payload = saved))
@@ -83,8 +82,8 @@ class MatchProfileService(private val repository: MatchProfileRepository, privat
     }
 
     private fun MatchProfile.mergeCopy(dto: MatchProfileDTO): MatchProfile {
-        return this.copy(status = dto.status, title = dto.title, description = dto.description,
-            profile = dto.profile.toEntity(), expires = dto.expires)
+        return this.copy(orgnr = dto.orgnr, status = dto.status, title = dto.title, description = dto.description,
+            profile = dto.profile.toEntity(), updatedBy = dto.updatedBy, expires = dto.expires)
     }
 
 }

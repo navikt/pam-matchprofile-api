@@ -19,7 +19,11 @@ class MatchProfileServiceTest(private val matchProfileService: MatchProfileServi
         val inactive = matchProfileService.save(updated.copy(status = MatchProfileStatus.INACTIVE))
         Assertions.assertEquals(inactive.status, MatchProfileStatus.INACTIVE)
         Assertions.assertEquals(inactive.title, "Changed title")
-        println(objectMapper.writeValueAsString(inactive))
+        val sameSource = matchProfileService.save(MatchProfileDTO(orgnr = "orgnr", sourceId = matchprofile.sourceId, title = "Same source", description = "this is a description",
+            profile = ProfileDTO(concepts = hashSetOf(ConceptDTO(label = "taktekker", branch = "occupation")))
+        ))
+        Assertions.assertEquals(sameSource.id, created.id)
+        println(objectMapper.writeValueAsString(sameSource))
     }
 
     @Test
