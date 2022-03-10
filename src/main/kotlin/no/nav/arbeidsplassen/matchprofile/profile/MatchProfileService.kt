@@ -1,18 +1,20 @@
 package no.nav.arbeidsplassen.matchprofile.profile
 
+import io.micronaut.aop.Around
 import jakarta.inject.Singleton
 import no.nav.arbeidsplassen.matchprofile.outbox.Outbox
 import no.nav.arbeidsplassen.puls.outbox.OutboxRepository
 import javax.transaction.Transactional
 
 @Singleton
+@Around
 class MatchProfileService(private val repository: MatchProfileRepository, private val outboxRepository: OutboxRepository) {
 
     @Transactional
     fun save(matchProfile: MatchProfileDTO) : MatchProfileDTO {
        val entity = matchProfile.id?.let { repository.findById(it).orElseThrow()
-           .copy(status = matchProfile.status, title = matchProfile.title, description = matchProfile.description,
-               profile = matchProfile.profile.toEntity(), expires = matchProfile.expires) } ?: matchProfile.toEntity()
+           .mergeCopy(matchProfile)} ?: repository.findBySourceId(matchProfile.sourceId) // We only allow one matchprofile per sourceId for now
+           ?.mergeCopy(matchProfile) ?: matchProfile.toEntity()
         val saved = repository.save(entity).toDTO()
         outboxRepository.save(Outbox(keyId = saved.id!!, type = saved.type.toString(), payload = saved))
         return saved
@@ -78,6 +80,11 @@ class MatchProfileService(private val repository: MatchProfileRepository, privat
        return MatchProfileDTO(id = id, orgnr = orgnr, sourceId = sourceId, type = type, status = status, title = title, description = description,
            profile = profile.toDTO(), createdBy = createdBy, updatedBy = updatedBy, expires = expires, created = created,
            updated = updated)
+    }
+
+    private fun MatchProfile.mergeCopy(dto: MatchProfileDTO): MatchProfile {
+        return this.copy(status = dto.status, title = dto.title, description = dto.description,
+            profile = dto.profile.toEntity(), expires = dto.expires)
     }
 
 }
