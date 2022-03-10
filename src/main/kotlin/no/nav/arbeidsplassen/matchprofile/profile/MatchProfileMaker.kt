@@ -4,6 +4,7 @@ import jakarta.inject.Singleton
 import no.nav.arbeidsplassen.matchprofile.cv.CvDTO
 import no.nav.arbeidsplassen.matchprofile.event.EventDTO
 import no.nav.arbeidsplassen.matchprofile.job.AdDTO
+import java.time.ZoneOffset
 
 @Singleton
 class MatchProfileMaker(private val conceptFinder: ConceptFinder) {
@@ -11,7 +12,8 @@ class MatchProfileMaker(private val conceptFinder: ConceptFinder) {
     fun jobMatchProfile(ad: AdDTO): MatchProfileDTO {
         val concepts = conceptFinder.findConceptsForJobAd(ad)
         return MatchProfileDTO(profile = ProfileDTO(concepts = concepts), type = MatchProfileType.JOB,
-            orgnr = ad.employer?.orgnr, sourceId = ad.uuid, title = ad.title, description = ad.businessName)
+            orgnr = ad.employer?.orgnr, sourceId = ad.uuid, title = ad.title, description = ad.businessName,
+            expires=ad.expires.toInstant(ZoneOffset.UTC))
     }
 
     fun eventMatchProfile(event: EventDTO): MatchProfileDTO {

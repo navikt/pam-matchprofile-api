@@ -44,7 +44,7 @@ enum class MatchProfileType {
 }
 
 enum class MatchProfileStatus {
-    ACTIVE, INACTIVE
+    ACTIVE, INACTIVE, DELETED
 }
 
 data class Profile(val concepts: Set<ConceptDTO> = hashSetOf())

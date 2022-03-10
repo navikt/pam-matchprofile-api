@@ -3,10 +3,12 @@ package no.nav.arbeidsplassen.matchprofile.profile
 import jakarta.inject.Singleton
 import no.nav.arbeidsplassen.matchprofile.outbox.Outbox
 import no.nav.arbeidsplassen.puls.outbox.OutboxRepository
+import javax.transaction.Transactional
 
 @Singleton
 class MatchProfileService(private val repository: MatchProfileRepository, private val outboxRepository: OutboxRepository) {
 
+    @Transactional
     fun save(matchProfile: MatchProfileDTO) : MatchProfileDTO {
        val entity = matchProfile.id?.let { repository.findById(it).orElseThrow()
            .copy(status = matchProfile.status, title = matchProfile.title, description = matchProfile.description,
@@ -16,6 +18,7 @@ class MatchProfileService(private val repository: MatchProfileRepository, privat
         return saved
     }
 
+    @Transactional
     fun saveWithUser(matchProfile: MatchProfileDTO, pId: String) : MatchProfileDTO {
         val entity = matchProfile.id?.let { repository.findById(it).orElseThrow()
             .takeIf {m -> m.pId == pId && m.sourceId == matchProfile.sourceId}?.copy(
@@ -34,7 +37,6 @@ class MatchProfileService(private val repository: MatchProfileRepository, privat
     fun findById(id:String): MatchProfileDTO? {
         return repository.findById(id).orElse(null).toDTO()
     }
-
 
     fun findByOrgnr(orgnr: String): List<MatchProfileDTO> {
         return repository.findByOrgnr(orgnr).map { it.toDTO() }
