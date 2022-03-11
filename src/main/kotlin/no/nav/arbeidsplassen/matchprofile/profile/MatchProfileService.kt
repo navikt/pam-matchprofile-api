@@ -4,16 +4,21 @@ import io.micronaut.aop.Around
 import jakarta.inject.Singleton
 import no.nav.arbeidsplassen.matchprofile.outbox.Outbox
 import no.nav.arbeidsplassen.puls.outbox.OutboxRepository
+import org.slf4j.LoggerFactory
 import javax.transaction.Transactional
 
 @Singleton
 @Around
 class MatchProfileService(private val repository: MatchProfileRepository, private val outboxRepository: OutboxRepository) {
 
+    companion object {
+        private final val LOG = LoggerFactory.getLogger(MatchProfileService::class.java)
+    }
+
     @Transactional
     fun save(matchProfile: MatchProfileDTO) : MatchProfileDTO {
        val entity = matchProfile.id?.let { repository.findById(it).orElseThrow()
-           .mergeCopy(matchProfile)} ?: repository.findBySourceId(matchProfile.sourceId)
+           .mergeCopy(matchProfile) } ?: repository.findBySourceId(matchProfile.sourceId)
            // We only allow one matchprofile per sourceId for now
            ?.mergeCopy(matchProfile) ?: matchProfile.toEntity()
         val saved = repository.save(entity).toDTO()
@@ -29,6 +34,20 @@ class MatchProfileService(private val repository: MatchProfileRepository, privat
         val saved = repository.save(entity).toDTO()
         outboxRepository.save(Outbox(keyId = saved.id!!, type = saved.type.toString(), payload = saved))
         return saved
+    }
+
+    @Transactional
+    fun deleteWithUser(matchProfile: MatchProfileDTO, pId: String): Boolean {
+        val entity = matchProfile.id?.let{
+            repository.findById(it).orElseThrow()
+                .takeIf { m -> m.pId == pId && m.sourceId == matchProfile.sourceId }
+        }
+        if (entity != null) {
+            LOG.info("Deleting entity ${entity?.id}")
+            repository.deleteById(entity.id)
+            return true
+        }
+        throw IllegalArgumentException("Could not delete matchprofile ${matchProfile.id}, not found")
     }
 
     fun findBySourceId(sourceId: String): MatchProfileDTO? {
