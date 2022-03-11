@@ -68,27 +68,20 @@ class MatchProfileService(private val repository: MatchProfileRepository, privat
 
     private fun MatchProfileDTO.toEntity(): MatchProfile {
         return MatchProfile(id = id, orgnr = orgnr, sourceId = sourceId, type = type, status = status, title = title, description = description,
-            profile = profile.toEntity(), createdBy = createdBy, updatedBy = updatedBy, expires = expires, created = created,
+            profile = profile, createdBy = createdBy, updatedBy = updatedBy, expires = expires, created = created,
         updated = updated)
     }
 
     private fun MatchProfileDTO.toEntity(pId: String): MatchProfile {
         return MatchProfile(id = id, pId = pId,  orgnr = orgnr, sourceId = sourceId, type = type, status = status, title = title, description = description,
-            profile = profile.toEntity(), createdBy = createdBy, updatedBy = updatedBy, expires = expires, created = created,
+            profile = profile, createdBy = createdBy, updatedBy = updatedBy, expires = expires, created = created,
             updated = updated)
-    }
-
-    private fun ProfileDTO.toEntity(): Profile {
-        return Profile(concepts = concepts.map { it.toEntity() }.toSet())
     }
 
     private fun ConceptDTO.toEntity(): ConceptDTO {
         return ConceptDTO(label = label, cid = cid, branch = branch, expandedConcept = expandedConcept, lang = lang)
     }
 
-    private fun Profile.toDTO(): ProfileDTO {
-        return ProfileDTO(concepts = concepts.map { it.toDTO() }.toSet() )
-    }
 
     private fun ConceptDTO.toDTO() : ConceptDTO {
         return ConceptDTO(label = label, cid = cid, branch = branch, expandedConcept = expandedConcept, lang = lang)
@@ -96,13 +89,13 @@ class MatchProfileService(private val repository: MatchProfileRepository, privat
 
     private fun MatchProfile.toDTO(): MatchProfileDTO {
        return MatchProfileDTO(id = id, orgnr = orgnr, sourceId = sourceId, type = type, status = status, title = title, description = description,
-           profile = profile.toDTO(), createdBy = createdBy, updatedBy = updatedBy, expires = expires, created = created,
+           profile = profile, createdBy = createdBy, updatedBy = updatedBy, expires = expires, created = created,
            updated = updated)
     }
 
     private fun MatchProfile.mergeCopy(dto: MatchProfileDTO): MatchProfile {
         return this.copy(orgnr = dto.orgnr, status = dto.status, title = dto.title, description = dto.description,
-            profile = dto.profile.toEntity(), updatedBy = dto.updatedBy, expires = dto.expires)
+            profile = dto.profile, updatedBy = dto.updatedBy, expires = dto.expires)
     }
 
 }

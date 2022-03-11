@@ -22,7 +22,7 @@ data class MatchProfile(
     val title: String? = null,
     val description: String? = null,
     @field:TypeDef(type = DataType.JSON)
-    val profile: Profile,
+    val profile: ProfileDTO,
     val createdBy: String = "matchprofile-api",
     val updatedBy: String = "matchprofile-api",
     val expires: Instant = Instant.now().plus(30, ChronoUnit.DAYS),
@@ -31,10 +31,6 @@ data class MatchProfile(
 )
 
 fun MatchProfile.isNew(): Boolean = id == null
-
-
-data class Concept(val label: String, val cid: Long? = null, val branch: String?,
-                      val expandedConcept: String? = null, val lang: String = "no")
 
 enum class MatchProfileType {
     USER,
@@ -46,5 +42,3 @@ enum class MatchProfileType {
 enum class MatchProfileStatus {
     ACTIVE, INACTIVE, DELETED
 }
-
-data class Profile(val concepts: Set<ConceptDTO> = hashSetOf())
