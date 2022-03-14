@@ -43,8 +43,8 @@ class MatchProfileService(private val repository: MatchProfileRepository, privat
                 .takeIf { m -> m.pId == pId && m.sourceId == matchProfile.sourceId }
         }
         if (entity != null) {
-            LOG.info("Deleting entity ${entity?.id}")
-            repository.deleteById(entity.id)
+            LOG.info("Deleting entity ${entity.id}")
+            repository.deleteById(entity.id!!)
             return true
         }
         throw IllegalArgumentException("Could not delete matchprofile ${matchProfile.id}, not found")

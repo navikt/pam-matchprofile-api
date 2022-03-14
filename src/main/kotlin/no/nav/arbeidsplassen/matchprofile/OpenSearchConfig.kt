@@ -19,37 +19,36 @@ import javax.net.ssl.X509TrustManager
 @Factory
 class OpenSearchConfig(@Value("\${OPENSEARCH_USER:admin}") private val user: String,
                        @Value("\${OPENSEARCH_PASSWORD:admin}") private val password: String,
-                       @Value("\${OPENSEARCH_URL:url}") private val url: String) {
+                       @Value("\${OPENSEARCH_URL:https://localhost:9200}") private val url: String) {
 
     @Singleton
     fun buildOpenSearchClient(): RestHighLevelClient {
         val credentialsProvider: CredentialsProvider = BasicCredentialsProvider()
-
         credentialsProvider.setCredentials(
             AuthScope.ANY,
             UsernamePasswordCredentials(user, password)
         )
         val builder = RestClient.builder(HttpHost.create(url))
-            .setHttpClientConfigCallback { httpClientBuilder ->
-                httpClientBuilder.setDefaultCredentialsProvider(
-                    credentialsProvider
-                )
-                // TODO fix when go prod
-                httpClientBuilder.setSSLHostnameVerifier { hostname, session -> true }
-                val context = SSLContext.getInstance("SSL")
-                context.init(null, arrayOf(object: X509TrustManager {
-                    override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {
-                    }
+            .setHttpClientConfigCallback {
+                    httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider)
+                if ("https://localhost:9200" == url) {
+                    httpClientBuilder.setSSLHostnameVerifier { _,_ -> true }
+                    val context = SSLContext.getInstance("SSL")
+                    context.init(null, arrayOf(object : X509TrustManager {
+                        override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+                        }
 
-                    override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
-                    }
+                        override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+                        }
 
-                    override fun getAcceptedIssuers(): Array<X509Certificate>? {
-                        return null
-                    }
+                        override fun getAcceptedIssuers(): Array<X509Certificate>? {
+                            return null
+                        }
 
-                }),SecureRandom())
-                httpClientBuilder.setSSLContext(context)
+                    }), SecureRandom())
+                    httpClientBuilder.setSSLContext(context)
+                }
+                httpClientBuilder
             }
         return RestHighLevelClient(builder)
     }

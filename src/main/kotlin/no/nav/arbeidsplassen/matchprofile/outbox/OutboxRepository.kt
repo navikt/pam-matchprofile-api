@@ -16,6 +16,7 @@ import java.time.Instant
 import java.util.*
 import javax.transaction.Transactional
 
+@Suppress("UNCHECKED_CAST")
 @JdbcRepository(dialect = Dialect.POSTGRES)
 abstract class OutboxRepository(private val connection: Connection, private val objectMapper: ObjectMapper): CrudRepository<Outbox, String> {
 
@@ -23,7 +24,7 @@ abstract class OutboxRepository(private val connection: Connection, private val 
     val updateSQL = """update "outbox" set "key_id"=?, "type"=?, "status"=?, "payload"=?::jsonb, "updated"=clock_timestamp() where "id"=?"""
 
     @Transactional
-    override fun <S : Outbox> save(entity: S): S {
+    override fun <S : Outbox> save(entity: S): S  {
         if (entity.isNew()) {
             connection.prepareStatement(insertSQL).apply {
                 val new = entity.copy(id = UUID.randomUUID().toString())

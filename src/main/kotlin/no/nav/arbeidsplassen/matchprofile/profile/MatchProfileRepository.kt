@@ -10,6 +10,7 @@ import java.sql.Timestamp
 import java.util.*
 import javax.transaction.Transactional
 
+@Suppress("UNCHECKED_CAST")
 @JdbcRepository(dialect = Dialect.POSTGRES)
 abstract class MatchProfileRepository(private val connection: Connection, private val objectMapper: ObjectMapper) : CrudRepository<MatchProfile, String> {
 
