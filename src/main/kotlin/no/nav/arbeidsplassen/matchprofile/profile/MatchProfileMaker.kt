@@ -12,8 +12,13 @@ class MatchProfileMaker(private val conceptFinder: ConceptFinder) {
     fun jobMatchProfile(ad: AdDTO): MatchProfileDTO {
         val concepts = conceptFinder.findConceptsForJobAd(ad)
         return MatchProfileDTO(profile = ProfileDTO(concepts = concepts, locations = mapLocations(ad)), type = MatchProfileType.JOB,
-            orgnr = ad.employer?.orgnr, sourceId = ad.uuid, title = ad.title, description = ad.businessName,
+            orgnr = ad.employer?.orgnr, sourceId = ad.uuid, title = ad.title, description = ad.businessName, status = mapStatus(ad),
             expires=ad.expires.toInstant(ZoneOffset.UTC))
+    }
+
+    private fun mapStatus(ad: AdDTO): MatchProfileStatus {
+       return if (ad.status == "ACTIVE") MatchProfileStatus.ACTIVE else
+           MatchProfileStatus.INACTIVE
     }
 
     private fun mapLocations(ad: AdDTO) =
