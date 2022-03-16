@@ -28,7 +28,7 @@ class StillingInternTopicListener(
             .map { ad -> matchProfileMaker.jobMatchProfile(ad) }
             .map { matchProfile -> matchProfileService.save(matchProfile) }
 
-        LOG.info("Saved ${saved.size} match profiles successfully")
+        LOG.info("Stored ${saved.size} match profiles successfully")
         return saved
     }
 
