@@ -24,6 +24,7 @@ class StillingInternTopicListener(
         LOG.info("Received ${adDtos.size} ads from Kafka")
 
         val saved = adDtos
+            .filter { it.publishedByAdmin != null }
             .map { ad -> matchProfileMaker.jobMatchProfile(ad) }
             .map { matchProfile -> matchProfileService.save(matchProfile) }
 
