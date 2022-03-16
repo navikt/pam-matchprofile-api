@@ -6,6 +6,8 @@
         </encoder>
     </appender>
     <logger name="no.nav.arbeidsplassen" level="DEBUG" />
+<!--    <logger name="io.micronaut.data.query" level="DEBUG" />-->
+<!--    <logger name="io.micronaut.transaction.jdbc.DataSourceTransactionManager" level="DEBUG"/>-->
 
     <root level="INFO">
         <appender-ref ref="stdout"/>

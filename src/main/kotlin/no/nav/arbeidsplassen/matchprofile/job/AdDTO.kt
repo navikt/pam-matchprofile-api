@@ -7,7 +7,7 @@ data class AdDTO(val id: Long, val uuid: String, val createdBy: String, val upda
                  val contactList: List<Contact> = listOf(), val mediaList: List<Media> = listOf(),
                  val locationList: List<Location> = listOf(), val properties: Map<String, Any> = hashMapOf(),
                  val title: String, val status: String, val privacy: String, val source: String,
-                 val medium: String, val reference: String, val expires: LocalDateTime,
+                 val medium: String, val reference: String, val expires: LocalDateTime, val publishedByAdmin: LocalDateTime?,
                  val employer: AdCompany?, val categoryList: List<Category> = listOf(), val businessName: String?)
 
 data class Category(val id: Long, val code: String, val categoryType: String, val name: String, val description: String?, val parentId: Long?)

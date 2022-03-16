@@ -12,7 +12,7 @@ import javax.transaction.Transactional
 class MatchProfileService(private val repository: MatchProfileRepository, private val outboxRepository: OutboxRepository) {
 
     companion object {
-        private final val LOG = LoggerFactory.getLogger(MatchProfileService::class.java)
+        private val LOG = LoggerFactory.getLogger(MatchProfileService::class.java)
     }
 
     @Transactional
