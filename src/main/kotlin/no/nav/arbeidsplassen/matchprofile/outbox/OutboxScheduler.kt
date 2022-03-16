@@ -3,6 +3,7 @@ package no.nav.arbeidsplassen.puls.outbox
 import io.micronaut.data.model.Pageable
 import io.micronaut.scheduling.annotation.Scheduled
 import jakarta.inject.Singleton
+import no.nav.arbeidsplassen.matchprofile.LeaderElection
 import no.nav.arbeidsplassen.matchprofile.outbox.OutboxStatus
 import org.slf4j.LoggerFactory
 import java.time.Instant
@@ -10,7 +11,8 @@ import java.time.temporal.ChronoUnit
 
 @Singleton
 class OutboxScheduler(private val repository: OutboxRepository,
-                      private val kafkaSender: OutboxKafkaSender) {
+                      private val kafkaSender: OutboxKafkaSender,
+                      private val leaderElection: LeaderElection){
 
     private val daysOld: Long = 14
     private var kafkaHasError = false
@@ -22,8 +24,8 @@ class OutboxScheduler(private val repository: OutboxRepository,
 
     @Scheduled(fixedDelay = "30s")
     fun outboxToKafka() {
-        if ( kafkaHasError.not()) {
-            LOG.debug("Running outbox to kafka sender, we have previously sent $counter")
+        if (leaderElection.isLeader() && kafkaHasError.not()) {
+            LOG.info("Running matchprofile outbox to kafka sender, we have previously sent $counter")
             repository.findByStatusOrderByUpdated(OutboxStatus.PENDING, Pageable.from(0, 100)).forEach { outbox ->
                 kafkaSender.sendEventFromOutbox(outbox.keyId, outbox.payload).subscribe(
                     {
