@@ -60,6 +60,11 @@ outbox:
   kafka:
     topic: teampam.matchprofile-intern-1
 
+ad:
+  kafka:
+    topic: teampam.stilling-intern-1
+    enabled: true
+
 flyway:
   datasources:
     default:
