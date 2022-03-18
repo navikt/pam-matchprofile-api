@@ -25,7 +25,7 @@ class StillingInternTopicListener(
         LOG.info("Received ${ads.size} ads from Kafka")
 
         if (kafkaStateRegistry.hasError()) {
-            LOG.error("Kafka is in an error state. Skipping batch to avoid message oss. Consumer should be paused.")
+            LOG.error("Kafka is in an error state. Skipping batch to avoid message loss. Consumer should be paused.")
             return emptyList()
         }
 
