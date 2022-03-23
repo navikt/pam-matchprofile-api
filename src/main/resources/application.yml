@@ -52,17 +52,17 @@ datasources:
     driverClassName: ${DB_DRIVER:org.testcontainers.jdbc.ContainerDatabaseDriver}
     username: ${DB_USERNAME:matchprofile}
     password: ${DB_PASSWORD:matchprofile}
-    maximum-pool-size: 4
+    maximum-pool-size: 8
     minimum-idle: 0
     pool-name: default
 
 outbox:
   kafka:
-    topic: teampam.matchprofile-intern-1
+    topic: ${OUTBOX_KAFKA_TOPIC:teampam.matchprofile-intern-1}
 
 ad:
   kafka:
-    topic: teampam.stilling-intern-1
+    topic: ${AD_KAFKA_TOPIC:teampam.stilling-intern-1}
     enabled: true
 
 flyway:

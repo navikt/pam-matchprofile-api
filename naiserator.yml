@@ -1,0 +1,61 @@
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: pam-matchprofile-api
+  namespace: teampam
+  labels:
+    team: teampam
+spec:
+  image: {{ image }}
+  port: 8080
+  liveness:
+    path: /internal/isAlive
+    initialDelay: 40
+  readiness:
+    path: /internal/isReady
+    initialDelay: 40
+  replicas:
+    min: 1
+    max: 1
+    cpuThresholdPercentage: 50
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 2048Mi
+    requests:
+      cpu: 200m
+      memory: 256Mi
+  leaderElection: true
+  prometheus:
+    enabled: true
+    path: /internal/prometheus
+  kafka:
+    pool: "{{ kafka_pool }}"
+  envFrom:
+    - secret: pam-matchprofile-api
+  env:
+    - name: DB_DRIVER
+      value: "org.postgresql.Driver"
+  gcp:
+    sqlInstances:
+      - name: pam-matchprofile-api
+        type: POSTGRES_14
+        tier: "{{ cloudsql_tier }}"
+        diskType: SSD
+        highAvailability: true
+        diskSize: 20
+        diskAutoresize: true
+        autoBackupTime: "03:30"
+        databases:
+          - name: matchprofile
+            envVarPrefix: DB
+        cascadingDelete: false
+  accessPolicy:
+    outbound:
+      external:
+        - host: janzz.jobs
+          ports:
+            - port: 443
+              name: https
+              protocol: HTTPS
+
