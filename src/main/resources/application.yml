@@ -43,8 +43,8 @@ jackson:
     indentOutput: true
 
 janzz:
-  url: https://localhost/japi
-  token: "token 123"
+  url: ${JANZZ_URL:http://localhost/japi}
+  token: ${JANZZ_TOKEN:token}
 
 datasources:
   default:
@@ -63,7 +63,7 @@ outbox:
 ad:
   kafka:
     topic: ${AD_KAFKA_TOPIC:teampam.stilling-intern-1}
-    enabled: true
+    enabled: false
 
 flyway:
   datasources:

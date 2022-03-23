@@ -1,0 +1,28 @@
+apiVersion: kafka.nais.io/v1
+kind: Topic
+metadata:
+  annotations:
+    kafka.nais.io/removeDataWhenResourceIsDeleted: "true"
+  name: pam-matchprofile-intern-1
+  namespace: teampam
+  labels:
+    team: teampam
+spec:
+  pool: {{ kafka_pool }}
+  config:
+    cleanupPolicy: compact,delete
+    minimumInSyncReplicas: 1
+    partitions: 3
+    replication: 2
+    retentionBytes: -1  # -1 means unlimited
+    retentionHours: 2160 #  90 days
+  acl:
+    - team: teampam
+      application: pam-matchprofile-api
+      access: readwrite
+    - team: teampam
+      application: aiven-tuan
+      access: readwrite
+    - team: teampam
+      application: pam-matchprofile-indexer
+      access: read
