@@ -11,6 +11,7 @@ val tcVersion= project.properties["tcVersion"]
 val javaVersion= project.properties["javaVersion"]
 val openSearchRestClientVersion= project.properties["openSearchRestClientVersion"]
 val jakartaJsonVersion= project.properties["jakartaJsonVersion"]
+val pamGeographyVersion= project.properties["pamGeographyVersion"]
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.5.31"
@@ -91,6 +92,7 @@ dependencies {
     implementation("io.micronaut.flyway:micronaut-flyway")
     implementation("org.opensearch.client:opensearch-rest-high-level-client:${openSearchRestClientVersion}")
     implementation("jakarta.json:jakarta.json-api:${jakartaJsonVersion}")
+    implementation("no.nav.pam.geography:pam-geography:${pamGeographyVersion}")
     testImplementation("io.micronaut.test:micronaut-test-junit5")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.testcontainers:postgresql:${tcVersion}")
