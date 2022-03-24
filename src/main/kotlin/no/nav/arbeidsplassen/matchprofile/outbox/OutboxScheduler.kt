@@ -11,8 +11,7 @@ import java.time.temporal.ChronoUnit
 
 @Singleton
 class OutboxScheduler(private val repository: OutboxRepository,
-                      private val kafkaSender: OutboxKafkaSender,
-                      private val leaderElection: LeaderElection){
+                      private val kafkaSender: OutboxKafkaSender){
 
     private val daysOld: Long = 14
     private var kafkaHasError = false
@@ -24,7 +23,7 @@ class OutboxScheduler(private val repository: OutboxRepository,
 
     @Scheduled(fixedDelay = "30s")
     fun outboxToKafka() {
-        if (leaderElection.isLeader() && kafkaHasError.not()) {
+        if (kafkaHasError.not()) {
             LOG.info("Running matchprofile outbox to kafka sender, we have previously sent $counter")
             repository.findByStatusOrderByUpdated(OutboxStatus.PENDING, Pageable.from(0, 100)).forEach { outbox ->
                 kafkaSender.sendEventFromOutbox(outbox.keyId, outbox.payload).subscribe(

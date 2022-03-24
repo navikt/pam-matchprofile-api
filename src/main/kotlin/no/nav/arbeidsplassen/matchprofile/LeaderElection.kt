@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory
 import java.net.InetAddress
 import java.time.LocalDateTime
 import jakarta.inject.Singleton
-import reactor.core.publisher.Mono
 
 @Singleton
 class LeaderElection(@Client("LeaderElect") val client: HttpClient,
