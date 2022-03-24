@@ -12,13 +12,11 @@ import reactor.core.publisher.Mono
 
 @Singleton
 class LeaderElection(@Client("LeaderElect") val client: HttpClient,
-                     private val electorPath: String = "NOLEADERELECTION",
                      private val objectMapper: ObjectMapper) {
 
     private val hostname = InetAddress.getLocalHost().hostName
-    private var leader =  "";
+    private var leader =  InetAddress.getLocalHost().hostName;
     private var lastCalled = LocalDateTime.MIN
-    private val electorUri = "http://"+electorPath;
 
     init {
         LOG.info("leader election initialized this hostname is $hostname")
@@ -33,12 +31,6 @@ class LeaderElection(@Client("LeaderElect") val client: HttpClient,
     }
 
     private fun getLeader(): String {
-        if (electorPath == "NOLEADERELECTION") return hostname;
-        if (leader.isBlank() || lastCalled.isBefore(LocalDateTime.now().minusMinutes(2))) {
-            leader = objectMapper.readValue(Mono.from(client.retrieve(electorUri)).block(), Elector::class.java).name
-            LOG.info("Running leader election getLeader is {} ", leader)
-            lastCalled = LocalDateTime.now()
-        }
         return leader
     }
 }
