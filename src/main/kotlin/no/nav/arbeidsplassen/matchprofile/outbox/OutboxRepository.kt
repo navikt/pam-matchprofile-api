@@ -1,17 +1,12 @@
-package no.nav.arbeidsplassen.puls.outbox
+package no.nav.arbeidsplassen.matchprofile.outbox
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.micronaut.data.jdbc.annotation.JdbcRepository
 import io.micronaut.data.model.Pageable
 import io.micronaut.data.model.query.builder.sql.Dialect
 import io.micronaut.data.repository.CrudRepository
-import io.micronaut.data.runtime.config.DataSettings
-import no.nav.arbeidsplassen.matchprofile.outbox.Outbox
-import no.nav.arbeidsplassen.matchprofile.outbox.OutboxStatus
-import no.nav.arbeidsplassen.matchprofile.outbox.isNew
 import java.sql.Connection
 import java.sql.PreparedStatement
-import java.sql.Statement
 import java.time.Instant
 import java.util.*
 import javax.transaction.Transactional
