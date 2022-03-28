@@ -36,6 +36,8 @@ spec:
   env:
     - name: DB_DRIVER
       value: "org.postgresql.Driver"
+    - name: AD_KAFKA_ENABLED
+      value: "{{ ad_kafka_enabled }}"
   gcp:
     sqlInstances:
       - name: pam-matchprofile-api
