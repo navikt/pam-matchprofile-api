@@ -1,6 +1,7 @@
 package no.nav.arbeidsplassen.matchprofile.job
 
 import io.micronaut.configuration.kafka.annotation.KafkaListener
+import io.micronaut.configuration.kafka.annotation.OffsetReset
 import io.micronaut.configuration.kafka.annotation.OffsetStrategy
 import io.micronaut.configuration.kafka.annotation.Topic
 import io.micronaut.context.annotation.Requires
@@ -11,7 +12,7 @@ import org.apache.kafka.clients.consumer.Consumer
 import org.slf4j.LoggerFactory
 
 @Requires(property = "ad.kafka.enabled", value = "true")
-@KafkaListener(batch = true, offsetStrategy = OffsetStrategy.DISABLED)
+@KafkaListener(batch = true, offsetStrategy = OffsetStrategy.DISABLED, offsetReset = OffsetReset.EARLIEST)
 class StillingInternTopicListener(
     private val matchProfileMaker: MatchProfileMaker,
     private val matchProfileService: MatchProfileService,

@@ -40,7 +40,7 @@ class OutboxScheduler(private val repository: OutboxRepository,
                 )
             }
         }
-        else LOG.error("Kafka is in error state!")
+        else if (kafkaHasError) LOG.error("Kafka is in error state, will not sending anything")
     }
 
     @Scheduled(cron = "0 0 8 * * *")
