@@ -58,7 +58,7 @@ datasources:
 
 outbox:
   kafka:
-    topic: ${OUTBOX_KAFKA_TOPIC:teampam.matchprofile-intern-1}
+    topic: ${OUTBOX_KAFKA_TOPIC:teampam.pam-matchprofile-intern-1}
 
 ad:
   kafka:
