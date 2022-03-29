@@ -1,0 +1,5 @@
+{
+  "cloudsql_tier": "db-custom-1-3840",
+  "kafka_pool": "nav-dev",
+  "ad_kafka_enabled": "true"
+}

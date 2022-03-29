@@ -26,5 +26,4 @@ class TypeaheadController(private val geographyService: GeographyService) {
 
         return geographyService.getTypeaheadCounties(q, numResults)
     }
-
 }

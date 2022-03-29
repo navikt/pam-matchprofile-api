@@ -1,4 +1,4 @@
-package no.nav.arbeidsplassen.puls.outbox
+package no.nav.arbeidsplassen.matchprofile.outbox
 
 import io.micronaut.configuration.kafka.annotation.KafkaClient
 import io.micronaut.configuration.kafka.annotation.KafkaKey

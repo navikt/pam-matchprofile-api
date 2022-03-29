@@ -3,7 +3,7 @@ package no.nav.arbeidsplassen.matchprofile.profile
 import io.micronaut.aop.Around
 import jakarta.inject.Singleton
 import no.nav.arbeidsplassen.matchprofile.outbox.Outbox
-import no.nav.arbeidsplassen.puls.outbox.OutboxRepository
+import no.nav.arbeidsplassen.matchprofile.outbox.OutboxRepository
 import org.slf4j.LoggerFactory
 import javax.transaction.Transactional
 

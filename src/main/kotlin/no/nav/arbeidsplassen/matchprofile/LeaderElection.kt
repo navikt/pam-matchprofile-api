@@ -12,8 +12,8 @@ import reactor.core.publisher.Mono
 
 @Singleton
 class LeaderElection(@Client("LeaderElect") val client: HttpClient,
-                     @Value("\${ELECTOR_PATH:NOLEADERELECTION}") val electorPath: String,
-                     val objectMapper: ObjectMapper) {
+                     @Value("\${ELECTOR_PATH:NOLEADERELECTION}") private val electorPath: String,
+                     private val objectMapper: ObjectMapper) {
 
     private val hostname = InetAddress.getLocalHost().hostName
     private var leader =  "";

@@ -1,10 +1,9 @@
-package no.nav.arbeidsplassen.puls.outbox
+package no.nav.arbeidsplassen.matchprofile.outbox
 
 import io.micronaut.data.model.Pageable
 import io.micronaut.scheduling.annotation.Scheduled
 import jakarta.inject.Singleton
 import no.nav.arbeidsplassen.matchprofile.LeaderElection
-import no.nav.arbeidsplassen.matchprofile.outbox.OutboxStatus
 import org.slf4j.LoggerFactory
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -41,7 +40,7 @@ class OutboxScheduler(private val repository: OutboxRepository,
                 )
             }
         }
-        else LOG.error("Kafka is in error state!")
+        else if (kafkaHasError) LOG.error("Kafka is in error state, will not sending anything")
     }
 
     @Scheduled(cron = "0 0 8 * * *")
