@@ -61,3 +61,6 @@ spec:
               name: https
               protocol: HTTPS
 
+  openSearch:
+    access: read
+    instance: matchprofile
