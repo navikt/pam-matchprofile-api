@@ -32,6 +32,7 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven("https://jcenter.bintray.com")
+    maven("https://github-package-registry-mirror.gc.nav.no/cached/maven-release")
 }
 
 micronaut {
