@@ -26,7 +26,7 @@ class MatchProfileMaker(private val conceptFinder: ConceptFinder) {
             LocationDTO(
                 country = it.country,
                 county = it.county,
-                municipal = it.municipal,
+                municipality = it.municipal,
                 city = it.city
             )
         }
