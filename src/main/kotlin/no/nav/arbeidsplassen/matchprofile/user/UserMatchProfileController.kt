@@ -1,6 +1,8 @@
-package no.nav.arbeidsplassen.matchprofile.profile
+package no.nav.arbeidsplassen.matchprofile.user
 
 import io.micronaut.http.annotation.*
+import no.nav.arbeidsplassen.matchprofile.profile.MatchProfileDTO
+import no.nav.arbeidsplassen.matchprofile.profile.MatchProfileService
 import org.slf4j.LoggerFactory
 
 @Controller("/api/v1/user/matchprofile")
