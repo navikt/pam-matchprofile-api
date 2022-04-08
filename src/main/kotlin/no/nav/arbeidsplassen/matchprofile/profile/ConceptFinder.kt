@@ -18,8 +18,9 @@ import org.slf4j.LoggerFactory
 @Singleton
 class ConceptFinder(private val janzzClient: JanzzClient) {
 
-    private val cSkills = 10
+    private val cSkills = 10 // count of skills we gonna expand with.
     private val cExpansions = 10
+    private val cSoftSkills = 10
 
     companion object {
         private val LOG = LoggerFactory.getLogger(ConceptFinder::class.java)
