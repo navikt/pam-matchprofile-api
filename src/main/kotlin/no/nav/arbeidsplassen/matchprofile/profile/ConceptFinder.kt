@@ -20,7 +20,6 @@ class ConceptFinder(private val janzzClient: JanzzClient) {
 
     private val cSkills = 10 // count of skills we gonna expand with.
     private val cExpansions = 10
-    private val cSoftSkills = 10
 
     companion object {
         private val LOG = LoggerFactory.getLogger(ConceptFinder::class.java)
@@ -128,7 +127,7 @@ class ConceptFinder(private val janzzClient: JanzzClient) {
     }
 
     private fun toConcept(terms: List<String?>, type: String): ConceptDTO {
-        println("$type:$terms")
+        LOG.debug("$type:$terms")
         return ConceptDTO(
             label = terms[0]!!,
             cid = terms[1]?.toLong(),
