@@ -26,10 +26,16 @@ class ConceptFinder(private val janzzClient: JanzzClient) {
     }
 
     fun findConceptsForJobAd(ad:AdDTO, related: Boolean = true) : Set<ConceptDTO> {
-        val concepts = getParsedConcepts(parseJobAd(ad))
-        LOG.info("parsed job ad: ${ad.uuid} found ${concepts.size} concepts")
-        val combineConcepts = if (related ) concepts.plus(getRelatedConcepts(concepts)) else concepts
-        return combineConcepts.associateBy { it.label }.values.toHashSet()
+        try {
+            val concepts = getParsedConcepts(parseJobAd(ad))
+            LOG.info("parsed job ad: ${ad.uuid} found ${concepts.size} concepts")
+            val combineConcepts = if (related) concepts.plus(getRelatedConcepts(concepts)) else concepts
+            return combineConcepts.associateBy { it.label }.values.toHashSet()
+        }
+        catch (e: Exception) {
+            LOG.error("We got exception, maybe from janzz. Catch so it does not block",e)
+        }
+        return setOf()
     }
 
     fun findConceptsForEvent(event: EventDTO, related: Boolean = true) : Set<ConceptDTO> {
