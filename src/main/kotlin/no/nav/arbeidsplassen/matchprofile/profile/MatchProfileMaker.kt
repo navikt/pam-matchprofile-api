@@ -7,13 +7,19 @@ import no.nav.arbeidsplassen.matchprofile.job.AdDTO
 import java.time.ZoneOffset
 
 @Singleton
-class MatchProfileMaker(private val conceptFinder: ConceptFinder) {
+class MatchProfileMaker(private val conceptFinder: ConceptFinder, private val matchProfileService: MatchProfileService) {
 
     fun jobMatchProfile(ad: AdDTO): MatchProfileDTO {
-        val concepts = conceptFinder.findConceptsForJobAd(ad)
-        return MatchProfileDTO(profile = ProfileDTO(concepts = concepts, locations = mapLocations(ad)), type = MatchProfileType.JOB,
-            orgnr = ad.employer?.orgnr, sourceId = ad.uuid, title = ad.title, description = ad.businessName, status = mapStatus(ad),
-            expires=ad.expires.toInstant(ZoneOffset.UTC))
+        // to reduce calls to janzz, we only run it once.
+        return matchProfileService.findBySourceId(ad.uuid)?.
+        let { it.copy(profile = it.profile.copy(locations = mapLocations(ad)), orgnr = ad.employer?.orgnr, title = ad.title,
+            description = ad.businessName, status = mapStatus(ad), expires = ad.expires.toInstant(ZoneOffset.UTC))} ?:
+        run {
+            val concepts = conceptFinder.findConceptsForJobAd(ad)
+            MatchProfileDTO(profile = ProfileDTO(concepts = concepts, locations = mapLocations(ad)), type = MatchProfileType.JOB,
+                orgnr = ad.employer?.orgnr, sourceId = ad.uuid, title = ad.title, description = ad.businessName, status = mapStatus(ad),
+                expires=ad.expires.toInstant(ZoneOffset.UTC))
+        }
     }
 
     private fun mapStatus(ad: AdDTO): MatchProfileStatus {

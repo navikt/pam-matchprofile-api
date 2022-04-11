@@ -32,10 +32,12 @@ class StillingInternTopicListener(
             return emptyList()
         }
 
-        val storedProfiles = ads
+        val storedProfiles = ads.asSequence()
+            .sortedByDescending(AdDTO::updated)
+            .distinctBy(AdDTO::uuid)
             .filter { it.publishedByAdmin != null }
             .map { ad -> matchProfileMaker.jobMatchProfile(ad) }
-            .map { matchProfile -> matchProfileService.save(matchProfile) }
+            .map { matchProfile -> matchProfileService.save(matchProfile) }.toList()
 
         kafkaConsumer.commitSync()
 
