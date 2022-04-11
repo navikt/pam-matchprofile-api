@@ -12,7 +12,7 @@ import org.apache.kafka.clients.consumer.Consumer
 import org.slf4j.LoggerFactory
 
 @Requires(property = "ad.kafka.enabled", value = "true")
-@KafkaListener(pollTimeout= "60000ms" , offsetStrategy = OffsetStrategy.DISABLED, offsetReset = OffsetReset.LATEST)
+@KafkaListener(sessionTimeout="60000ms", offsetStrategy = OffsetStrategy.DISABLED, offsetReset = OffsetReset.LATEST)
 class StillingInternTopicListener(
     private val matchProfileMaker: MatchProfileMaker,
     private val matchProfileService: MatchProfileService,

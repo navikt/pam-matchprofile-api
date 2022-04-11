@@ -28,8 +28,8 @@ class ConceptFinder(private val janzzClient: JanzzClient) {
     fun findConceptsForJobAd(ad:AdDTO, related: Boolean = true) : Set<ConceptDTO> {
         try {
             val concepts = getParsedConcepts(parseJobAd(ad))
-            LOG.info("parsed job ad: ${ad.uuid} found ${concepts.size} concepts")
             val combineConcepts = if (related) concepts.plus(getRelatedConcepts(concepts)) else concepts
+            LOG.info("parsed job ad: ${ad.uuid} found ${combineConcepts.size} concepts")
             return combineConcepts.associateBy { it.label }.values.toHashSet()
         }
         catch (e: Exception) {
