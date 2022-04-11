@@ -3,11 +3,12 @@ package no.nav.arbeidsplassen.matchprofile.health
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
+import no.nav.arbeidsplassen.matchprofile.job.KafkaStateRegistry
 import no.nav.arbeidsplassen.matchprofile.profile.ConceptFinder
 import org.slf4j.LoggerFactory
 
 @Controller("/internal")
-class StatusController(private val conceptFinder: ConceptFinder) {
+class StatusController(private val conceptFinder: ConceptFinder, private val kafkaStateRegistry: KafkaStateRegistry) {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(StatusController::class.java)
@@ -20,6 +21,10 @@ class StatusController(private val conceptFinder: ConceptFinder) {
 
     @Get("/isAlive")
     fun isAlive(): HttpResponse<String> {
+        if (kafkaStateRegistry.hasError()) {
+            LOG.error("Kafka state is in error, we will restart")
+            return HttpResponse.serverError("Kafka state is ERROR")
+        }
         return HttpResponse.ok("OK")
     }
 

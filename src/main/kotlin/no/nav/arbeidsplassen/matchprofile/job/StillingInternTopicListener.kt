@@ -39,9 +39,11 @@ class StillingInternTopicListener(
             .map { ad -> matchProfileMaker.jobMatchProfile(ad) }
             .map { matchProfile -> matchProfileService.save(matchProfile) }.toList()
 
+        LOG.info("committing at offset ${offsets.last()}")
         kafkaConsumer.commitSync()
 
         LOG.info("Stored ${storedProfiles.size} match profiles successfully")
+        kafkaStateRegistry.clearStateRegistry()
         return storedProfiles
     }
 

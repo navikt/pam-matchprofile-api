@@ -12,6 +12,11 @@ class KafkaStateRegistry {
     }
 
     fun hasError(): Boolean = stateRegistry.isNotEmpty() && stateRegistry.values.contains(KafkaState.ERROR)
+
+    fun clearStateRegistry() {
+        stateRegistry.clear()
+    }
+
 }
 
 enum class KafkaState {
