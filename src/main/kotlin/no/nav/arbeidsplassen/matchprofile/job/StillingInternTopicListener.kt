@@ -4,15 +4,16 @@ import io.micronaut.configuration.kafka.annotation.KafkaListener
 import io.micronaut.configuration.kafka.annotation.OffsetReset
 import io.micronaut.configuration.kafka.annotation.OffsetStrategy
 import io.micronaut.configuration.kafka.annotation.Topic
+import io.micronaut.context.annotation.Property;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import io.micronaut.context.annotation.Requires
-import no.nav.arbeidsplassen.matchprofile.profile.MatchProfileDTO
 import no.nav.arbeidsplassen.matchprofile.profile.MatchProfileMaker
 import no.nav.arbeidsplassen.matchprofile.profile.MatchProfileService
 import org.apache.kafka.clients.consumer.Consumer
 import org.slf4j.LoggerFactory
 
 @Requires(property = "ad.kafka.enabled", value = "true")
-@KafkaListener(sessionTimeout="120000ms", offsetStrategy = OffsetStrategy.DISABLED, offsetReset = OffsetReset.LATEST)
+@KafkaListener(groupId = "\${ad.kafka.groupid:matchprofile-ad-sync}", offsetStrategy = OffsetStrategy.DISABLED, offsetReset = OffsetReset.LATEST, properties = [Property(name = ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, value = "60000")])
 class StillingInternTopicListener(
     private val matchProfileMaker: MatchProfileMaker,
     private val matchProfileService: MatchProfileService,

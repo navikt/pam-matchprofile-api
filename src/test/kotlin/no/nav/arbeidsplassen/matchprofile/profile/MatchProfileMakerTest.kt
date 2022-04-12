@@ -18,9 +18,13 @@ class MatchProfileMakerTest(private val matchProfileMaker: MatchProfileMaker,
         val ad = objectMapper.readValue(ConceptFinder::class.java.classLoader.getResourceAsStream("jobs/bartender.json"), AdDTO::class.java)
             .copy(uuid = uuid)
         val matchProfile = matchProfileMaker.jobMatchProfile(ad)
+        val updated = matchProfile.copy(profile = ProfileDTO(concepts = setOf(ConceptDTO(label = "Testutvikler", branch = "occupation")), locations = listOf()))
+        matchProfileService.save(updated)
         println(objectMapper.writeValueAsString(matchProfile))
         Assertions.assertEquals(uuid, matchProfile.sourceId)
         Assertions.assertEquals(MatchProfileStatus.ACTIVE,matchProfile.status )
         Assertions.assertEquals("974201828", matchProfile.orgnr)
+        val matchProfile2 = matchProfileMaker.jobMatchProfile(ad)
+        Assertions.assertEquals(1, matchProfile2.profile.concepts.size)
     }
 }

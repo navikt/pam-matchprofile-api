@@ -4,16 +4,23 @@ import jakarta.inject.Singleton
 import no.nav.arbeidsplassen.matchprofile.cv.CvDTO
 import no.nav.arbeidsplassen.matchprofile.event.EventDTO
 import no.nav.arbeidsplassen.matchprofile.job.AdDTO
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.time.ZoneOffset
 
 @Singleton
 class MatchProfileMaker(private val conceptFinder: ConceptFinder, private val matchProfileService: MatchProfileService) {
 
+    companion object {
+        private val LOG = LoggerFactory.getLogger(MatchProfileMaker::class.java)
+    }
     fun jobMatchProfile(ad: AdDTO): MatchProfileDTO {
         // to reduce calls to janzz, we only run it once.
         return matchProfileService.findBySourceId(ad.uuid)?.
-        let { it.copy(profile = it.profile.copy(locations = mapLocations(ad)), orgnr = ad.employer?.orgnr, title = ad.title,
-            description = ad.businessName, status = mapStatus(ad), expires = ad.expires.toInstant(ZoneOffset.UTC))} ?:
+        takeIf {it.profile.concepts.isNotEmpty()}?.
+        let { LOG.debug("Matchprofile already exists, and has comcepts. Skipping janzz")
+            it.copy(profile = it.profile.copy(locations = mapLocations(ad)), orgnr = ad.employer?.orgnr, title = ad.title,
+            description = ad.businessName, status = mapStatus(ad), expires = ad.expires.toInstant(ZoneOffset.UTC))}?:
         run {
             val concepts = conceptFinder.findConceptsForJobAd(ad)
             MatchProfileDTO(profile = ProfileDTO(concepts = concepts, locations = mapLocations(ad)), type = MatchProfileType.JOB,
