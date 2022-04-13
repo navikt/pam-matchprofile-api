@@ -36,7 +36,7 @@ class StillingInternTopicListener(
             val matchProfile = matchProfileMaker.jobMatchProfile(ad)
             matchProfileService.save(matchProfile)
         }
-        LOG.info("committing at offset $offset")
+        LOG.info("committing at ${ad.uuid} offset $offset")
         kafkaConsumer.commitSync()
         kafkaStateRegistry.clearStateRegistry()
     }

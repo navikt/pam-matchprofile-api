@@ -18,7 +18,7 @@ class MatchProfileMaker(private val conceptFinder: ConceptFinder, private val ma
         // to reduce calls to janzz, we only run it once.
         return matchProfileService.findBySourceId(ad.uuid)?.
         takeIf {it.profile.concepts.isNotEmpty()}?.
-        let { LOG.debug("Matchprofile already exists, and has comcepts. Skipping janzz")
+        let { LOG.debug("Matchprofile already exists, and has concepts. Skipping janzz")
             it.copy(profile = it.profile.copy(locations = mapLocations(ad)), orgnr = ad.employer?.orgnr, title = ad.title,
             description = ad.businessName, status = mapStatus(ad), expires = ad.expires.toInstant(ZoneOffset.UTC))}?:
         run {
