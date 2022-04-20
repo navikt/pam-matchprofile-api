@@ -13,12 +13,13 @@ val openSearchRestClientVersion= project.properties["openSearchRestClientVersion
 val jakartaJsonVersion= project.properties["jakartaJsonVersion"]
 val pamGeographyVersion= project.properties["pamGeographyVersion"]
 
+// gradle kts support is not too good, consider to use groovy.
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.6.20"
-    id("org.jetbrains.kotlin.kapt") version "1.6.20"
+    id("org.jetbrains.kotlin.jvm") version "1.6.21"
+    id("org.jetbrains.kotlin.kapt") version "1.6.21"
     id("com.github.johnrengelman.shadow") version "7.1.0"
     id("io.micronaut.application") version "3.3.2"
-    id("org.jetbrains.kotlin.plugin.allopen") version "1.6.20"
+    id("org.jetbrains.kotlin.plugin.allopen") version "1.6.21"
 }
 
 configurations.all {
