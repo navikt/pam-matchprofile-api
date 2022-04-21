@@ -7,6 +7,7 @@ import io.micronaut.data.repository.CrudRepository
 import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.Timestamp
+import java.time.Instant
 import java.util.*
 import javax.transaction.Transactional
 
@@ -62,5 +63,8 @@ abstract class MatchProfileRepository(private val connection: Connection, privat
 
     @Transactional
     abstract fun findByPId(pId: String): MatchProfile?
+
+    @Transactional
+    abstract fun findByStatusAndExpiresBefore(status: MatchProfileStatus, expires: Instant): List<MatchProfile>
 }
 

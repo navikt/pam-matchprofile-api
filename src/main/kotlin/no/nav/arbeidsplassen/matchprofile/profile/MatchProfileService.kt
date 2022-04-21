@@ -5,6 +5,7 @@ import jakarta.inject.Singleton
 import no.nav.arbeidsplassen.matchprofile.outbox.Outbox
 import no.nav.arbeidsplassen.matchprofile.outbox.OutboxRepository
 import org.slf4j.LoggerFactory
+import java.time.Instant
 import javax.transaction.Transactional
 
 @Singleton
@@ -50,6 +51,21 @@ class MatchProfileService(private val repository: MatchProfileRepository, privat
         throw IllegalArgumentException("Could not delete matchprofile ${matchProfile.id}, not found")
     }
 
+    @Transactional
+    fun deactivateExpired() {
+        val now = Instant.now()
+        val activeButExpired = repository.findByStatusAndExpiresBefore(MatchProfileStatus.ACTIVE, Instant.now())
+        if (activeButExpired.isNotEmpty()) {
+            LOG.info("found ${activeButExpired.size} that has expired before $now")
+            activeButExpired
+                .map { it.copy(status = MatchProfileStatus.INACTIVE) }
+                .forEach {
+                    val payload = repository.save(it).toDTO()
+                    outboxRepository.save(Outbox(keyId = it.id!!, type = it.type.toString(), payload = payload))
+            }
+        }
+    }
+
     fun findBySourceId(sourceId: String): MatchProfileDTO? {
         return repository.findBySourceId(sourceId)?.toDTO()
     }
@@ -65,6 +81,7 @@ class MatchProfileService(private val repository: MatchProfileRepository, privat
     fun findByPId(pId: String): MatchProfileDTO? {
         return repository.findByPId(pId)?.toDTO()
     }
+
 
     private fun MatchProfileDTO.toEntity(): MatchProfile {
         return MatchProfile(id = id, orgnr = orgnr, sourceId = sourceId, type = type, status = status, title = title, description = description,
