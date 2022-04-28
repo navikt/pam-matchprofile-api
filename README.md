@@ -22,8 +22,11 @@ API-et eksponeres på port `8080`.
 
 ## Lokalt utviklingsmiljø
 
-Lokalt utviklingsmiljø kan settes opp med `Docker`. Bygg og start med følgende kommandoer fra
-prosjektets rotmappe:
+Lokalt utviklingsmiljø kan settes opp med `Docker`.
+
+### API, Kafka og database
+
+Bygg og start appen med følgende kommandoer fra prosjektets rotmappe:
 
 ```
 docker compose build
@@ -32,7 +35,21 @@ docker compose build
 docker compose up
 ```
 
-API-et eksponeres via Docker-container på port `9090`.
+API-et eksponeres via Docker-container på port `9090`. Kommandoen starter også Kafka og Postgres.
+
+### Indexer og OpenSearch
+
+Appen kan startes sammen med [pam-matchprofile-index](https://github.com/navikt/pam-matchprofile-index) og 
+OpenSearch ved å bruke Docker-profilen `index`. Bruk følgende kommandoer fra *root*:
+
+```
+docker compose build
+```
+```
+docker compose --profile index up
+```
+
+OpenSearch Dashboard kan da åpnes i browser på `http://localhost:5601`
 
 ---
 
