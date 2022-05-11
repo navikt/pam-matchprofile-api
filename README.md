@@ -3,7 +3,7 @@ pam-matchprofile-api
 
 REST API for match-profiler.
 
-Applikasjonen for å motta stillingsannonser og mappe dem til match-profiler via parser hos Janzz.
+Applikasjon for å motta stillingsannonser og mappe dem til match-profiler via parser hos Janzz.
 Match-profilene tilgjengeliggjøres via REST API og Kafka.
 
 # Komme i gang
