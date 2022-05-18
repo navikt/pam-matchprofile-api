@@ -10,6 +10,7 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+
   broker_matchprofile:
     image: confluentinc/cp-kafka:5.5.0
     hostname: broker
@@ -28,6 +29,7 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+
   postgres_matchprofile:
     hostname: postgres
     container_name: postgres_matchprofile
@@ -39,6 +41,7 @@ services:
     volumes:
     - ./src/test/resources/postgres:/docker-entrypoint-initdb.d
     command: ["postgres", "-c", "log_statement=none"]
+
   matchprofile:
     build: .
     depends_on:
@@ -51,3 +54,41 @@ services:
       DB_DRIVER: org.postgresql.Driver
       DB_HOST: 'postgres'
       KAFKA_BOOTSTRAP_SERVERS: 'broker:29092'
+
+  opensearch_matchprofile:
+    image: opensearchproject/opensearch:1.3.1
+    container_name: opensearch_matchprofile
+    environment:
+      - node.name=opensearch_matchprofile
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+      - "9600:9600"
+    profiles:
+      - index
+
+  opensearch_dashboards_matchprofile:
+    image: opensearchproject/opensearch-dashboards:1.3.0
+    container_name: opensearch_dashboards_matchprofile
+    depends_on:
+      - opensearch_matchprofile
+    ports:
+      - "5601:5601"
+    expose:
+      - "5601"
+    environment:
+      OPENSEARCH_HOSTS: '["https://opensearch_matchprofile:9200"]'
+    profiles:
+      - index
+
+  matchprofile_index:
+    image: ghcr.io/navikt/pam-matchprofile-index:22.110.112333
+    depends_on:
+      - zookeeper_matchprofile
+      - opensearch_matchprofile
+    ports:
+      - "9091:8081"
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: 'broker:29092'
+    profiles:
+      - index
