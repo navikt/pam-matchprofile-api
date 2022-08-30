@@ -1,10 +1,8 @@
-pam-matchprofile-api
-================
+## Beskrivelse
 
-REST API for matchprofiler.
+pam-matchprofile-api er en applikasjon for å motta stillingsannonser fra Kafka og mappe dem til matchprofiler (stillingsannonse i Janzz-format) via parser hos Janzz. Matchprofilene tilgjengeliggjøres via REST API og Kafka.
 
-Applikasjon for å motta stillingsannonser og mappe dem til matchprofiler via parser hos Janzz.
-Matchprofilene tilgjengeliggjøres via REST API og Kafka.
+Dette prosjektet er for å la jobbsøkere kunne bruke sin CV til å søke etter relevante stillinger basert på Janzz sin matchteknologi. Prosjektet er pågående og enda ikke tatt fullt i bruk. 
 
 # Teknisk dokumentasjon
 
